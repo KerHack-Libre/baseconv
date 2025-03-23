@@ -1,10 +1,10 @@
 # Meson project File 
 # Author Umar Ba <jUmarB@protonmail.com> <github/Jukoo> 
-# 
-project('baseconv', 'c',
+
+project('bcv', 'c',
   version : '0.1',
   # TODO : Add License 
-  default_options : ['c_std=gnu99','warning_level=3'])
+  default_options : ['c_std=gnu99','warning_level=3','bindir=/usr/local/bin'])
 
 cc = meson.get_compiler('c') 
 
@@ -27,7 +27,7 @@ bcv_sources=[
 #         other architecture  and languages protability  
 baseconv_shared_lib  = library('bcv', bcv_sources, version:'0.0.1', soversion:'1') 
 
-executable('baseconv',
+executable(meson.project_name(),
            'main.c',
            link_with: baseconv_shared_lib,
            install : true)
