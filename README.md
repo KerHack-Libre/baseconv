@@ -8,9 +8,11 @@ Converts to different numerical bases such as binary (2), octal (8)  and hexadec
 
 #### Setting Up Ecosystem or Testing Environment 
 
-There are two alternatives:   
-1 - Build On your direct host 
-2 - Or on a dedicated environment (for testing and a quick tour).  
+There are two alternatives:  
+
+**1** - Build On your direct host 
+
+**2** - Or on a dedicated environment (for testing and a quick tour).  
 
 **The ecosystem chosen to build the project is based on the [meson build system](https://mesonbuild.com/index.html)**
 
