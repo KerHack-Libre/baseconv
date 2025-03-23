@@ -13,6 +13,7 @@ There are two alternatives:
 2 - Or on a dedicated environment (for testing and a quick tour).  
 
 **The ecosystem chosen to build the project is based on the [meson build system](https://mesonbuild.com/index.html)**
+
 1 - Direct Host 
 ---
 It is therefore strongly recommended to have meson build available on your machine.
@@ -26,27 +27,32 @@ The Executable w'ill be stored in build directory `./build/bcv`
 2 - Pre-build or Dedicated Environment 
 ---  
 By the way, there's already a minimalistic **pre-build environment** for those who want to test in Docker or Chroot.
-As you may have noticed, there's `no Dockerfile` in the repository, because we want to launch the environment quickly 
-without doing a full Docker command. Dowloading and building can take time. 
+As you may have noticed, there's no Docker file in the repository, because we want to launch the environment quickly 
+without doing a full Docker command. 
 
 We've already provided a script to export the environment to a local Docker image.~(no Docker build , no Docker pull  no Docker anything)~
-Here's a script named `build_context.sh`.  
+Here's a script named `build_context.sh` in the `context` directory. 
 Just run the script. 
-``bash 
-# I assume you've given the right permission 
+```bash 
+# go to the context directory and I assume you've given the right permission 
 $ > ./build_context.sh 
-``` 
-This Script is just exporting the `context`  to Docker image  Directly.  
-After the Script exection  you can proceed with this : 
-``bash 
-$ docker run -ti bcv:testing  bash # to run
 ```  
-Another Way , is you can also have the possibility to use a Change Root or chroot environment  directly and it's available in most Unix environments. 
-The  `context`  directory is like a root file system  and you can automaticaly lock with chroot command. 
+To clarify This  script  export the `rootfs.tar.xz` archive  directly to  Local Docker images and at the end generate a folder named `rootfs`,
+that you can use also. See (2- A Change Root or ...). 
+
+This script will generate 2 environments of your choice: 
+1 - docker image directly available on your host, no need to docker pull 
+just run... 
+```bash 
+$ docker run -ti bcv:testing bash # to run
+``` 
+2 - A Change Root or chroot environment is available in most Unix environments. 
+    After `build_context.sh` has finished running, a `rootfs` directory will be available. 
+
 To lock in : 
 ```bash 
-$ > sudo  chroot context bash 
-```
+$ > sudo  chroot rootfs bash 
+``` 
 And there you are!  The command is available in whole environment 
 just type  `bcv -h` 
 
