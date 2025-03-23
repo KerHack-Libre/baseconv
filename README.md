@@ -13,6 +13,7 @@ There are two alternatives:
 2 - Or on a dedicated environment (for testing and a quick tour).  
 
 **The ecosystem chosen to build the project is based on the [meson build system](https://mesonbuild.com/index.html)**
+
 1 - Direct Host 
 ---
 It is therefore strongly recommended to have meson build available on your machine.
