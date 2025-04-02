@@ -11,13 +11,15 @@
 #if defined(__cpluscplus)
 # define  __BCEXPORT  extern "C" 
 #else 
-# define  __BCEXPORT  extern 
+# define  __BCEXPORT  /* !NOTHING */ 
 #endif 
 
 #define  __BCX(__type_return_function)\
   __BCEXPORT __type_return_function 
 
-#define __symbole_sep  0x2e  
+#if !defined(__symbole_sep)   
+# define __symbole_sep  0x2e  
+#endif 
 
 #define BYTE_UNIT sizeof(void *)  
 #define _SIZE(__value)  sizeof(__value) * BYTE_UNIT  
@@ -45,8 +47,8 @@ struct __bcb_t
   int  _index ; 
 }; 
 
-/* @fn binary_section_begin(int) 
- * @brief  detect wich section group of binary  contain value  
+/* @fn detect_bit_section_starting_group(int) 
+ * @brief  detect wich section group of binary  contain the first value  
  *         e.g  0000.0000.0000.0010.0000.0111  
  *              |xxxxxxxxxxxxx|--------------|
  *                  escaped     conserved 
@@ -54,7 +56,7 @@ struct __bcb_t
  * @param  int - the value 
  * @return int - the section(th) index that contain the value 
  */
-static __inline__ int binary_section_begin(int value) 
+static __inline__ int detect_bit_section_starting_group(int value) 
 {
   
   size_t vsize =  _SIZE(value) ; 
@@ -82,7 +84,7 @@ static __inline__ int binary_section_begin(int value)
  * @brief  Just print "."  e.g : 0000.0000. ..... 
  *         This function is used by bc_binv2 
  */
-static __inline__ void print_dot(void) 
+static __inline__ void print_symbol_seperation(void) 
 {
    static int i = 0;
    if (i==4)

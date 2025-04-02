@@ -11,6 +11,12 @@
 # define bcvrepl_export  
 #endif 
 
+#include "bcv_conf.h"
+
+#define BCV_STARTUP_MESG \
+  BCV_VERSION \
+  "Copyright 2025 Galsen Low Level.\n"\
+  "This is free software with ABSOLUTELY NO WARRANTY.\n"
 
 #define  _Nullable   
 #define  _NonNullable  [static 0x1]  
@@ -34,25 +40,29 @@ extern char * program_invocation_short_name ;
  * @brief  define the shell prompt 
  * @param  const char  * - if Null  the default shell prompt is used 
  * */
-bcvrepl_export void bcrepl_shell(const char * _Nullable  __prompt)  ; 
+bcvrepl_export void 
+bcrepl_shell(const char * _Nullable  __prompt)  ; 
 
 /* @fn bcrepl_compute(const char *  _NonNullable) 
  * @brief  compute the input 
  * @param  const char * _NonNullable - buffer  
  */
-bcvrepl_export void bcrepl_compute(const char __buffer _NonNullable)  ; 
+bcvrepl_export void 
+bcrepl_compute(const char __buffer _NonNullable)  ; 
 
 /* @fn bcrepl_listen_cmd(const char * _NonNullable)
  * @brief listen basic command   instruction like exit quit  
  * @param  const char *  _NonNullable  - buffer 
   */ 
-bcvrepl_export void  bcrepl_listen_cmd(const char __buffer _NonNullable) ; 
+bcvrepl_export void __attribute__((weak))   
+bcrepl_listen_special_cmd(const char __buffer _NonNullable) ; 
 
 /* @fn __trimlower(char * _NonNullable) 
  * @brief  trim empty space left and right  and make it lower case 
  * @param  char  * command 
  */ 
-static void  __trimlower(char  __cmd _NonNullable); 
+static void  
+__trimlower(char  __cmd _NonNullable); 
 
 
 

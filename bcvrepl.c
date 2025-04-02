@@ -6,7 +6,9 @@
 #include<stdio.h> 
 #include<string.h> 
 #include<stdlib.h> 
-#include<ctype.h> 
+#include<ctype.h>
+#include <errno.h> 
+
 #include"bcvrepl.h" 
 #include "baseconv.h"
 
@@ -17,6 +19,7 @@ void bcrepl_shell(const char *  prompt)
    int proceed =1 ; 
    char prompt_buffer[bcrepl_buffer_limit]={0}; 
    int  line = 0; 
+   fprintf(stdout , "%s" , BCV_STARTUP_MESG) ; 
    while (proceed, ++line) 
    { 
      printf(bpf, line,  prmpt , bcrepl_symbole_prompt) ;  
@@ -38,7 +41,7 @@ void bcrepl_shell(const char *  prompt)
 void bcrepl_compute(const char * buffer) 
 {
 
-  bcrepl_listen_cmd(buffer) ; 
+  bcrepl_listen_special_cmd(buffer) ; 
   struct bcv_parse_t {
      char  _sym_instruction:8;  
      int _value ; 
@@ -55,14 +58,19 @@ void bcrepl_compute(const char * buffer)
        buffer_clone = __nptr; 
     }
     if(scan_limite & 0b01)
+    {
       bcv_scaner._value = strtol(token , __nptr  , 0xa) ;  
+      if(errno!= 0)
+      {
+         fprintf(stderr , "%s \n",  strerror(*__errno_location())) ; 
+         bcv_scaner._value =  0; 
+      }
+    }
 
     if(scan_limite ==0) break ;  
     scan_limite+=~(scan_limite^scan_limite)  ; 
   }
 
-  if(0==bcv_scaner._value) 
-    return ;  //!TODO :  print message instead 
 
    printf(" |-> "); 
    switch(bcv_scaner._sym_instruction & 0xff ) 
@@ -79,7 +87,7 @@ void bcrepl_compute(const char * buffer)
    }
 } 
 
-void bcrepl_listen_cmd(const char * buffer) 
+void bcrepl_listen_special_cmd(const char * buffer) 
 {
    char * cmd =  (char *) buffer;  
    __trimlower(cmd) ; 

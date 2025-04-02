@@ -34,7 +34,7 @@ int main(int ac , char **av)
 
   //!NOTICE : when no argument was provided  the repl is automaticaly launched
   if (ac == 1 ) 
-  {
+  { 
     bcrepl_shell(__nptr); 
     return EXIT_SUCCESS ;
   }

@@ -3,7 +3,7 @@
  */ 
 #include <stdlib.h>
 #include <stdio.h> 
-#include <limits.h>
+#include <limits.h> 
 
 #include "baseconv.h" 
 
@@ -29,11 +29,11 @@ void bc_bin(int value)
 
 void bc_binv2(int value , int show_notation) 
 { 
-  int section_bin = _SIZE(value) - (binary_section_begin(value)  * 4)  ;
+  int section_bin=_SIZE(value)-(detect_bit_section_starting_group(value) *4);
   while (  0 < section_bin  ) 
   {  
      if(show_notation >0)
-        print_dot() ; 
+        print_symbol_seperation() ; 
      
      SHOWBITREP(BITSET(value , section_bin)); 
      section_bin+=~(section_bin^section_bin) ;  
