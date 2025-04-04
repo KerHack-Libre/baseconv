@@ -1,4 +1,4 @@
-# Baseconv
+# Baseconv  <img src="https://img.shields.io/badge/With%20Python%20Support-yellow?style=for-the-badge&logo=python" width="152"  height="" alt="Python-Support" style="margin-right:20px"  align="right"/>
 
 Converts to different numerical bases such as binary (2), octal (8)  and hexadecimal (16)  with built-in interactive shell. 
 
