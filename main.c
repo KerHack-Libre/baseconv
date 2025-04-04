@@ -33,7 +33,7 @@ int main(int ac , char **av)
   (void) setvbuf(stdout , (void *)0 , _IONBF ,0) ;  
 
   //!NOTICE : when no argument was provided  the repl is automaticaly launched
-  if (ac == 1 ) 
+  if (!(ac ^1))  
   { 
     bcrepl_shell(__nptr); 
     return EXIT_SUCCESS ;
@@ -49,10 +49,10 @@ int main(int ac , char **av)
       switch(*(short_flags+1)) 
       {
         case 'h': printf("%s%s",USAGE, bcv_version) ;break; 
-        case 'v': printf("%s", bcv_version);break; 
+        case 'v': printf("%s", BCV_STARTUP_MESG);break; 
         default:
                  fprintf(stderr, "unknow option \n");
-                 printf("%s%s",USAGE, bcv_version) ;break; 
+                 printf("%s%s",USAGE,  BCV_STARTUP_MESG) ;break; 
                  break ; 
       }
     }
@@ -79,8 +79,6 @@ int main(int ac , char **av)
       }
     }
   }
-
-
 
   return EXIT_SUCCESS ; 
 }

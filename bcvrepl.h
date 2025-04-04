@@ -43,6 +43,10 @@ extern char * program_invocation_short_name ;
 bcvrepl_export void 
 bcrepl_shell(const char * _Nullable  __prompt)  ; 
 
+
+bcvrepl_export void  
+bcrepl_customize(void(*__custom_user_shell)(const char * __user_custom_prompt) ,  const char  * __prompt) ; 
+
 /* @fn bcrepl_compute(const char *  _NonNullable) 
  * @brief  compute the input 
  * @param  const char * _NonNullable - buffer  
@@ -61,7 +65,7 @@ bcrepl_listen_special_cmd(const char __buffer _NonNullable) ;
  * @brief  trim empty space left and right  and make it lower case 
  * @param  char  * command 
  */ 
-static void  
+bcvrepl_export void 
 __trimlower(char  __cmd _NonNullable); 
 
 

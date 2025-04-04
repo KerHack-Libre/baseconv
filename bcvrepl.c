@@ -37,6 +37,13 @@ void bcrepl_shell(const char *  prompt)
    }
 } 
 
+void bcrepl_customize(void(* custom_user_shell)(const char * user_custom_prompt),  const char *   prompt) 
+{
+  if(!custom_user_shell) 
+     bcrepl_shell( prompt ) ; 
+   else  
+     custom_user_shell(prompt) ; 
+}
 
 void bcrepl_compute(const char * buffer) 
 {
@@ -98,7 +105,7 @@ void bcrepl_listen_special_cmd(const char * buffer)
 
 }
 
-static void __trimlower(char* bcv_cmd) 
+void __trimlower(char* bcv_cmd) 
 {
   int len  = strlen(bcv_cmd) , i =~0, j=0 ;  
   char auto_format_cmd[0x14] ={0}; 
