@@ -5,8 +5,8 @@ from pybcv  import  *
 
 
 def main(): 
-    bcbin(12)     # convert 12 to binnary notation 
-    bcbinv2(100)  # convert 12 to binnary notation with  dot separation  
+    bcbin(12)     # convert 12 to binary notation 
+    bcbinv2(100)  # convert 12 to binary notation with dot separation  
     bcoct(392)    # convert 392 to octal  repesentation 
     bchex(33)     # convert 33  to hexadecimal  representation 
     print("----------------------------------------") 
