@@ -1,2 +1,19 @@
 build/
 context/rootfs
+python-support/.dist/
+python-support/pybcv/pybcv.cpython-313-x86_64-linux-gnu.so 
+cat << ER >> .gitignore 
+python-support/.dist/
+python-support/pybcv/dist/
+python-support/pybcv/build/
+python-support/pybcv/bcv.c
+cat << ER >> .gitignore 
+python-support/.dist/
+python-support/pybcv/pybcv.cpython-313-x86_64-linux-gnu.so 
+cat << ER >> .gitignore 
+python-support/.dist/
+python-support/pybcv/dist/
+python-support/pybcv/build/
+python-support/pybcv/bcv.c
+python-support/pybcv/Pybcv.egg-info/
+

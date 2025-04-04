@@ -1,0 +1,18 @@
+#+ This file will be the replacement of  setup.py  
+#NOTE : on progress 
+project('pybcv', 'cython')
+
+
+py = import('python').find_installation()
+dep_py = py.dependency()
+
+inc_dirs = include_directories(['../', '../build'])
+
+py.extension_module(
+    meson.project_name(),
+    'bcv.pyx',
+    dependencies : [dep_py],
+    include_directories:inc_dirs,
+)
+
+
