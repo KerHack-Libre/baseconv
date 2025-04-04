@@ -1,5 +1,4 @@
-This Readme explain how to build  baseconversion to python  package  
-
+This README explains how to build the base conversion Python package.
 ```
 
 ```
