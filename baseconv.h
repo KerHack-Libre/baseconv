@@ -103,8 +103,7 @@ static __inline__ void print_symbol_seperation(void)
  * @param  int  - the base 
  * @param  struct __bcb_t *  - bcb data structure  hold the buffer in  the length 
  */ 
-static __always_inline  void 
-__common_prototype_base_convertion(int value , int base ,  struct __bcb_t  *  bcb)  
+static void __common_prototype_base_convertion(int value , int base ,  struct __bcb_t  *  bcb)  
 { 
    int  remain  = 0;  
    while (0!= value) 
