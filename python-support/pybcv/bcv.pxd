@@ -5,9 +5,9 @@
 
 cdef extern  from "baseconv.h": 
 
-    void bc_bin(int __value);
-    void bc_oct(int __value);
-    void bc_hex(int __value); 
+    char * bc_bin(int __value);
+    char * bc_oct(int __value);
+    char * bc_hex(int __value); 
     void bc_binv2(int __value ,  int  __notation_show); 
 
 

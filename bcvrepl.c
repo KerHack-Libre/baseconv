@@ -3,13 +3,13 @@
  * @author Umar Ba <jUmarB@protonmail.com>  <github/Jukoo> 
  */ 
 
-#include<stdio.h> 
-#include<string.h> 
-#include<stdlib.h> 
-#include<ctype.h>
+#include <stdio.h> 
+#include <string.h> 
+#include <stdlib.h> 
+#include <ctype.h>
 #include <errno.h> 
 
-#include"bcvrepl.h" 
+#include "bcvrepl.h" 
 #include "baseconv.h"
 
 
@@ -29,6 +29,7 @@ void bcrepl_shell(const char *  prompt)
      char *n  = strchr(prompt_buffer , 0xa) ;
      if (n)  *n  = 0;    
      
+     if (0==strlen(prompt_buffer)) continue ; 
      bcrepl_compute(prompt_buffer) ; 
      /* NOTICE :always clean the repl buffer */
      bzero(prompt_buffer , bcrepl_buffer_limit) ; 
@@ -78,20 +79,21 @@ void bcrepl_compute(const char * buffer)
     scan_limite+=~(scan_limite^scan_limite)  ; 
   }
 
-
-   printf(" |-> "); 
+   char  *out =  (void *)0 ; 
    switch(bcv_scaner._sym_instruction & 0xff ) 
    {
       case 'x' : 
-         bc_hex(bcv_scaner._value); break ; 
+         out = bc_hex(bcv_scaner._value); break ; 
       case 'b': 
-         bc_binv2(bcv_scaner._value, 1); break ; 
+         out = bc_bin(bcv_scaner._value); break ; 
       case 'o': 
-         bc_oct(bcv_scaner._value); break ; 
+         out = bc_oct(bcv_scaner._value); break ; 
       default : 
-         fprintf(stderr ,"Unknow operation see -h to print the usage\n") ;
+         fprintf(stderr ,"|-> W: Unknow operation see -h to print the usage\n") ;
          break ; 
    }
+   if(out) 
+    printf(" |-> %s\n", out) ; 
 } 
 
 void bcrepl_listen_special_cmd(const char * buffer) 

@@ -4,18 +4,22 @@
 from bcv cimport * 
 
 
-cpdef  void  bcbin(int value) :
-    bc_bin(value); 
+cpdef   bcbin(int value) :
+    cdef  char * r = bc_bin(value); 
+    return r.decode() ;  
 
 cpdef   void bcbinv2(int value)  : 
     cdef int __always_show_notation =True; 
     bc_binv2(value ,  __always_show_notation) 
 
-cpdef void  bcoct(int value) : 
-    bc_oct(value) ;  
+cpdef bcoct(int value) : 
+    cdef char *r=  bc_oct(value) ;  
+    return r.decode() ; 
 
-cpdef void bchex(int value) : 
-    bc_hex(value) 
+cpdef bchex(int value) :
+    cdef char * r = bc_hex(value); 
+    print("hex -> ", r) ; 
+    return r.decode() ; 
 
 
 def  bcv_repl(*args): 
