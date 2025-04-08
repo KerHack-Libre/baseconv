@@ -67,9 +67,15 @@ int main(int ac , char **av)
     {
       switch(*(short_flags+1)) 
       {
-        case 'x': bc_hex(value); break; 
-        case 'o': bc_oct(value); break; 
-        case 'b': bc_bin(value); break; 
+        case 'x': 
+          (void *) bc_hex(value); 
+          break; 
+        case 'o': 
+          (void *) bc_oct(value);
+          break; 
+        case 'b': 
+          (void *) bc_bin(value);
+          break; 
         case 'h': printf("%s%s",USAGE, bcv_version) ;break; 
         case 'v': printf("%s", bcv_version);break; 
         default:
