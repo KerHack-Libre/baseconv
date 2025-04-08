@@ -37,18 +37,13 @@
 #define SHOWBITREP(__expr) printf("%i",__expr)  
 
 #define SHOWBASE_EXPR(__expr, __it , __prefix ,__fmt, __out){\
-  printf(__prefix);\
-  sprintf(__out , "%s", __prefix) ;\
-  size_t size = strlen(__expr); \
+  strcat(__out , __prefix); \
+  int i =strlen(__prefix); \
   while(0 != __it){\
-    char c = *(__expr +__it-1)  ;\
-    printf(__fmt, c);\
-    sprintf((__out +(2+(size - __it))) , __fmt ,  c);\
-    __it+=~(__it^__it) ;\
+    sprintf( (__out+i) ,__fmt, *(__expr+ __it-1));\
+    __it+=~(__it^__it),  i=-~i ;\
   }\
-  puts("") ;\
   }
-
 
 #define SHOWHEX(__expr, __it ,__out) \
   SHOWBASE_EXPR(__expr ,__it, "0x","%c", __out) 
@@ -123,8 +118,7 @@ static __inline__ void print_symbol_seperation(void)
  * @param  int  - the base 
  * @param  struct __bcb_t *  - bcb data structure  hold the buffer in  the length 
  */ 
-static __always_inline  void 
-__common_prototype_base_convertion(int value , int base ,  struct __bcb_t  *  bcb)  
+static void __common_prototype_base_convertion(int value , int base ,  struct __bcb_t  *  bcb)  
 { 
    int  remain  = 0;  
    while (0!= value) 

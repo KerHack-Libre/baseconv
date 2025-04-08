@@ -33,7 +33,7 @@ bcv_sources=[
 
 #NOTICE : The logic  of  baseconv  is builded as External Shared and static library
 #         to make it more extensible 
-baseconv_shared_lib  = both_libraries('bcv', bcv_sources, version:meson.project_version(), soversion:meson.project_version()) 
+baseconv_shared_lib  = both_libraries('bcv', bcv_sources, version:meson.project_version(), soversion:meson.project_version(), install:true) 
 
 executable(meson.project_name(),
            'main.c',
