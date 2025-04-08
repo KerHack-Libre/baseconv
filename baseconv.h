@@ -7,6 +7,15 @@
 #define  __BASECONV 
 
 #include <stdio.h> 
+#if defined(__linux__) 
+# if __glibc_has_attribute(warn_unused_result)  
+#   define  __mustcheck __attribute__((warn_unused_result)) 
+# else
+#   define  __mustcheck /*  NOTHING */ 
+# endif // __glibc_has_attribute 
+#else  
+# define  __mustcheck  /* NOTHING */ 
+#endif //! __linux__  
 
 #if defined(__cpluscplus)
 # define  __BCEXPORT  extern "C" 
@@ -21,31 +30,42 @@
 # define __symbole_sep  0x2e  
 #endif 
 
+
 #define BYTE_UNIT sizeof(void *)  
 #define _SIZE(__value)  sizeof(__value) * BYTE_UNIT  
-#define BITSET(__value , __index)  ((__value) >> __index -1 )  & 0x1
-#define SHOWBITREP(__expr) printf("%i",__expr) 
+#define BITSET(__value , __index)  (  ((__value) >> (__index -1 ))   & 0x1)
+#define SHOWBITREP(__expr) printf("%i",__expr)  
 
-#define SHOWBASE_EXPR(__expr, __it , __prefix ,__fmt) \
+#define SHOWBASE_EXPR(__expr, __it , __prefix ,__fmt, __out){\
   printf(__prefix);\
-  while(0 != (__it--))\
-      printf(__fmt, *(__expr+__it));\
-  puts("") 
+  sprintf(__out , "%s", __prefix) ;\
+  size_t size = strlen(__expr); \
+  while(0 != __it){\
+    char c = *(__expr +__it-1)  ;\
+    printf(__fmt, c);\
+    sprintf((__out +(2+(size - __it))) , __fmt ,  c);\
+    __it+=~(__it^__it) ;\
+  }\
+  puts("") ;\
+  }
 
-#define SHOWHEX(__expr, __it ) \
-  SHOWBASE_EXPR(__expr ,__it, "0x","%c") 
 
-#define SHOWOCT(__expr ,__it) \
-  SHOWBASE_EXPR(__expr ,__it, "0o","%i") 
+#define SHOWHEX(__expr, __it ,__out) \
+  SHOWBASE_EXPR(__expr ,__it, "0x","%c", __out) 
+
+#define SHOWOCT(__expr ,__it , __out) \
+  SHOWBASE_EXPR(__expr ,__it, "0o","%i", __out) 
   
-#define SHOWBIN(__expr , __it)\
-  SHOWBASE_EXPR(__expr ,__it, "0b","%i") 
+#define SHOWBIN(__expr , __it,__out)\
+  SHOWBASE_EXPR(__expr ,__it, "0b","%i",  __out) 
 
 struct __bcb_t 
 {
   char _buff[0xff]; 
   int  _index ; 
-}; 
+};
+
+extern char bc_global_buffer[0xff] ; 
 
 /* @fn detect_bit_section_starting_group(int) 
  * @brief  detect wich section group of binary  contain the first value  
@@ -127,9 +147,9 @@ __common_prototype_base_convertion(int value , int base ,  struct __bcb_t  *  bc
  */ 
 __BCX(void) bc_binv2(int __value, int __show_notation) ; 
 
-__BCX(void) bc_bin(int value) ;  
-__BCX(void) bc_oct(int __value) ; 
-__BCX(void) bc_hex(int __value)  ; 
+__BCX(__mustcheck char *) bc_bin(int value) ;  
+__BCX(__mustcheck char *) bc_oct(int __value) ; 
+__BCX(__mustcheck char *) bc_hex(int __value)  ; 
 
 
 

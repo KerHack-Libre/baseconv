@@ -7,13 +7,7 @@ project('bcv', 'c',
   default_options : ['c_std=gnu99','warning_level=3','bindir=/usr/local/bin'])
 
 cc = meson.get_compiler('c') 
-add_languages(
-  'cython',
-  native:true,
-  required:true
-  )
 
-inc= include_directories('python-support') 
 
 add_project_arguments( 
   cc.get_supported_arguments( 
@@ -44,5 +38,4 @@ baseconv_shared_lib  = both_libraries('bcv', bcv_sources, version:meson.project_
 executable(meson.project_name(),
            'main.c',
            link_with: baseconv_shared_lib,
-           include_directories:inc,
            install : true)
