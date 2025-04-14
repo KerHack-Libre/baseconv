@@ -87,7 +87,9 @@ void bcrepl_compute(const char * buffer)
       case 'b': 
          out = bc_bin(bcv_scaner._value); break ; 
       case 'o': 
-         out = bc_oct(bcv_scaner._value); break ; 
+         out = bc_oct(bcv_scaner._value); break ;
+      case 'h': fprintf(stdout , "%s%s" ,  USAGE , bcv_version ); break; 
+      case 'v': fprintf(stdout , "%s", BCV_STARTUP_MESG) ; break ; 
       default : 
          fprintf(stderr ,"|-> W: Unknow operation see -h to print the usage\n") ;
          break ; 

@@ -28,7 +28,7 @@
 
 #if !defined(__symbole_sep)   
 # define __symbole_sep  0x2e  
-#endif 
+#endif  
 
 
 #define BYTE_UNIT sizeof(void *)  
@@ -53,6 +53,17 @@
   
 #define SHOWBIN(__expr , __it,__out)\
   SHOWBASE_EXPR(__expr ,__it, "0b","%i",  __out) 
+
+
+#define  USAGE "\
+  Usage : bcv [OPTION] ... <NUMBER>\n\
+  Convert Number to specific base\n\
+  -b,  Convert to binary Base\n\
+  -x,  Convert to hexadecimal Base\n\
+  -o,  Convert to Octal Base\n\
+  -v,  Version of the Program\n\
+  -h,  Print  this help\n\
+  "
 
 struct __bcb_t 
 {

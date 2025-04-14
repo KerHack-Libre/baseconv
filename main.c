@@ -16,15 +16,6 @@
 
 
 
-#define  USAGE "\
-Usage : bcv [OPTION] ... <NUMBER>\n\
-Convert Number to specific base\n\
--b,  Convert to binary Base\n\
--x,  Convert to hexadecimal Base\n\
--o,  Convert to Octal Base\n\
--v,  Version of the Program\n\
--h,  Print  this help\n\
-"
 //!TODO : Build  argparse library  that handle arguments 
 //!NOTICE : I'it will be a seperate project 
 
