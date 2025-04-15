@@ -58,11 +58,14 @@
 #define  USAGE "\
   Usage : bcv [OPTION] ... <NUMBER>\n\
   Convert Number to specific base\n\
-  -b,  Convert to binary Base\n\
-  -x,  Convert to hexadecimal Base\n\
-  -o,  Convert to Octal Base\n\
-  -v,  Version of the Program\n\
-  -h,  Print  this help\n\
+  inline      | interactive | description\n\
+  -b <number>   b/<number>    Convert to binary Base\n\
+  -x <number>   x/<number>    Convert to hexadecimal Base\n\
+  -o <number>   o/<number>    Convert to Octal Base\n\
+                exit or quit  To exit  interactive shell\n\
+  ---------\n\
+  -v, 'v' or '!' Version of the Program\n\
+  -h, 'h' or '?' Print  this help\n\
   "
 
 struct __bcb_t 
