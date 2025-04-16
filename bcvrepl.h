@@ -9,18 +9,56 @@
 # define bcvrepl_export   extern "C" 
 #else 
 # define bcvrepl_export  
-#endif 
+#endif  
 
 #include "bcv_conf.h"
 
+#if defined(__linux__) 
+#include <term.h> 
+#include <curses.h> 
+/* @fn  init_tty(void) 
+ * @brief  setting up terminal for curses attribute 
+ * */
+static inline  __attribute__((constructor)) void init_tty(void)  
+{
+   
+  int erret = OK ; 
+  if(ERR  == setupterm((void *)0 , 1 , &erret)) 
+  {
+    fprintf(stderr , "Fail to  setup the current terminal \n"); 
+    return ; 
+  } 
+}
+
+#define  setaf ((TERMTYPE*)cur_term)->Strings[359] 
+#define  reset ((TERMTYPE*)cur_term)->Strings[39] 
+
+#define  __SETAF(__color)  tputs(tparm(setaf , __color) , 1 ,putchar)
+#define  GREEN   __SETAF(COLOR_GREEN) 
+#define  RED     __SETAF(COLOR_RED) 
+#define  YELLOW  __SETAF(COLOR_YELLOW) 
+#define  __reset tputs(reset,  1, putchar ) 
+
+#define  apply(__statement , __color_attr)  \
+  __color_attr;__statement; __reset 
+
+#else /* NOTICE : NO SUPPORT FOR  WINDOW*/  
+
+# define GREEN 
+# define RED 
+# define YELLOW 
+# define  apply(__statement , __color_attr /*!ignored*/)  __statement
+#endif   
+
+
 #define BCV_STARTUP_MESG \
   BCV_VERSION \
-  "Copyright 2025 Galsen Low Level.\n"\
-  "This is free software with ABSOLUTELY NO WARRANTY.\n"
+"Copyright 2025 Galsen Low Level.\n"\
+"This is free software with ABSOLUTELY NO WARRANTY.\n"
 
+#define  __nptr  (void *) 0   
 #define  _Nullable   
 #define  _NonNullable  [static 0x1]  
-#define  __nptr  (void *) 0   
 #define  bcrepl_symbole_prompt  0x3e 
 #define  bcrepl_buffer_limit    0x50
 #define  __bcrepl_prompt_format  "[%i] %s %c "
@@ -34,7 +72,7 @@ extern char * program_invocation_short_name ;
 # define  pname  "bcv" 
 #endif 
 
-#define bcv_version "baseconverter version 0.1.0\nGLL Production\n"
+#define bcv_version "baseconverter version 0.1.0 by GLL Production\n"
 
 /* @fn bcrepl_shell(const char * _Nullable) 
  * @brief  define the shell prompt 

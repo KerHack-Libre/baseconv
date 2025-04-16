@@ -22,7 +22,10 @@ void bcrepl_shell(const char *  prompt)
    fprintf(stdout , "%s" , BCV_STARTUP_MESG) ; 
    while (proceed, ++line) 
    { 
-     printf(bpf, line,  prmpt , bcrepl_symbole_prompt) ;  
+     //!repl_promt 
+
+     apply( printf(bpf, line,  prmpt , bcrepl_symbole_prompt) , GREEN) ;  
+
      if(!(fgets(prompt_buffer ,  bcrepl_buffer_limit, stdin)))
        continue ; 
     
@@ -88,12 +91,21 @@ void bcrepl_compute(const char * buffer)
          out = bc_bin(bcv_scaner._value); break ; 
       case 'o': 
          out = bc_oct(bcv_scaner._value); break ; 
+
+      case '?':  
+      case 'h': fprintf(stdout , "%s%s" ,  USAGE , bcv_version ); break; 
+
+      case '!': 
+      case 'v': fprintf(stdout , "%s", BCV_STARTUP_MESG) ; break ; 
       default : 
-         fprintf(stderr ,"|-> W: Unknow operation see -h to print the usage\n") ;
+         apply(fprintf(stderr ,"|-> W: Unknow operation type 'h' or '?' to print the usage\n")
+             ,YELLOW) ;
          break ; 
    }
-   if(out) 
-    printf(" |-> %s\n", out) ; 
+   if (!out)  
+     return ;  
+    
+   apply(printf(" |-> %s\n", out) , RED) ; 
 } 
 
 void bcrepl_listen_special_cmd(const char * buffer) 
