@@ -13,7 +13,6 @@
 
 #include "bcv_conf.h"
 
-//! TODO: check also gnu gcc flag 
 #if defined(__linux__) 
 #include <term.h> 
 #include <curses.h> 
@@ -26,20 +25,24 @@ static inline  __attribute__((constructor)) void init_tty(void)
   int erret = OK ; 
   if(ERR  == setupterm((void *)0 , 1 , &erret)) 
   {
-    fprintf(stderr , "Fail to init  tty \n"); 
+    fprintf(stderr , "Fail to  setup the current terminal \n"); 
     return ; 
   } 
 }
-#define  __SETAF(__color)  tputs(tparm(set_a_foreground , __color) , 1 ,putchar)
+
+#define  setaf ((TERMTYPE*)cur_term)->Strings[359] 
+#define  reset ((TERMTYPE*)cur_term)->Strings[39] 
+
+#define  __SETAF(__color)  tputs(tparm(setaf , __color) , 1 ,putchar)
 #define  GREEN   __SETAF(COLOR_GREEN) 
 #define  RED     __SETAF(COLOR_RED) 
 #define  YELLOW  __SETAF(COLOR_YELLOW) 
-#define  __reset tputs(exit_attribute_mode,  1, putchar ) 
+#define  __reset tputs(reset,  1, putchar ) 
 
 #define  apply(__statement , __color_attr)  \
   __color_attr;__statement; __reset 
 
-#else 
+#else /* NOTICE : NO SUPPORT FOR  WINDOW*/  
 
 # define GREEN 
 # define RED 
