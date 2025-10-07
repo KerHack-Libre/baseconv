@@ -4,7 +4,6 @@
  */ 
 #if  !defined(bcv_repl_h)
 #define bcv_repl_h 
-
 #ifdef __cplusplus
 # define bcvrepl_export   extern "C" 
 #else 
@@ -23,7 +22,7 @@ static inline  __attribute__((constructor)) void init_tty(void)
 {
    
   int erret = OK ; 
-  if(ERR  == setupterm((void *)0 , 1 , &erret)) 
+  if(ERR  == setupterm((void *)0 ,1, &erret)) 
   {
     fprintf(stderr , "Fail to  setup the current terminal \n"); 
     return ; 
@@ -52,9 +51,9 @@ static inline  __attribute__((constructor)) void init_tty(void)
 
 
 #define BCV_STARTUP_MESG \
-  BCV_VERSION \
-"Copyright 2025 Galsen Low Level.\n"\
-"This is free software with ABSOLUTELY NO WARRANTY.\n"
+  BCV_VERSION_STR\
+  BCV_DISCLAIMER
+
 
 #define  __nptr  (void *) 0   
 #define  _Nullable   
@@ -72,7 +71,6 @@ extern char * program_invocation_short_name ;
 # define  pname  "bcv" 
 #endif 
 
-#define bcv_version "baseconverter version 0.1.0 by GLL Production\n"
 
 /* @fn bcrepl_shell(const char * _Nullable) 
  * @brief  define the shell prompt 

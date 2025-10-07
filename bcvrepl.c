@@ -73,7 +73,7 @@ void bcrepl_compute(const char * buffer)
       bcv_scaner._value = strtol(token , __nptr  , 0xa) ;  
       if(errno!= 0)
       {
-         fprintf(stderr , "%s \n",  strerror(*__errno_location())) ; 
+         fprintf(stderr , "%s \012",  strerror(*__errno_location())) ; 
          bcv_scaner._value =  0; 
       }
     }
@@ -93,10 +93,10 @@ void bcrepl_compute(const char * buffer)
          out = bc_oct(bcv_scaner._value); break ; 
 
       case '?':  
-      case 'h': fprintf(stdout , "%s%s" ,  USAGE , bcv_version ); break; 
+      case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 
 
       case '!': 
-      case 'v': fprintf(stdout , "%s", BCV_STARTUP_MESG) ; break ; 
+      case 'v': fprintf(stdout , "%s\012", BCV_STARTUP_MESG) ; break ; 
       default : 
          apply(fprintf(stderr ,"|-> W: Unknow operation type 'h' or '?' to print the usage\n")
              ,YELLOW) ;
@@ -105,7 +105,7 @@ void bcrepl_compute(const char * buffer)
    if (!out)  
      return ;  
     
-   apply(printf(" |-> %s\n", out) , RED) ; 
+   apply(printf(" |-> %s\012", out) , RED) ; 
 } 
 
 void bcrepl_listen_special_cmd(const char * buffer) 

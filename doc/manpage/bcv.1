@@ -1,0 +1,78 @@
+.TH BCV 1 "October 2025" "Version 1.0.1" "User Commands"
+.SH NAME
+bcv \- convert numbers to binary, octal or hexadecimal representation
+.SH SYNOPSIS
+.B bcv
+[\fIOPTION\fR] ... <\fINUMBER\fR>
+
+.SH DESCRIPTION
+.B bcv
+is a lightweight utility that converts numerical values into different bases such as binary (base 2), octal (base 8), and hexadecimal (base 16).  
+It includes a built-in interactive shell for quick conversions.
+
+.SH BASES
+.TP
+\fBbase 2\fR
+Binary representation (digits 0 to 1)
+.TP
+\fBbase 8\fR
+Octal representation (digits 0 to 7)
+.TP
+\fBbase 16\fR
+Hexadecimal representation (digits 0 to 15, i.e. 0–f)
+
+.SH USAGE
+.nf
+Usage: bcv [OPTION] ... <NUMBER>
+
+Convert a number to a specific base.
+
+Inline | Interactive | Description
+-------------------------------------------------
+-b <number> | b/<number> | Convert to binary base
+-x <number> | x/<number> | Convert to hexadecimal base
+-o <number> | o/<number> | Convert to octal base
+             | exit or quit | Exit the interactive shell
+-------------------------------------------------
+
+-v, 'v' or '!'   Display program version
+-h, 'h' or '?'   Display this help message
+.fi
+
+.SH EXAMPLES
+.TP
+Convert 255 to hexadecimal:
+.RS
+bcv -x 255
+.RE
+.TP
+Convert 42 to binary interactively:
+.RS
+bcv -b/42  
+.RE
+
+.SH INTERACTIVE SHELL
+When started without arguments, \fBbcv\fR enters interactive mode.  
+You can then type commands such as:
+.RS
+b/<number>  → convert to binary
+.br
+o/<number>  → convert to octal
+.br
+x/<number>  → convert to hexadecimal
+.br
+exit or quit → exit the shell
+.RE
+
+.SH VERSION
+bcv version 1.0.1 - BaseConverter (bcv) version 1.0.1 by KerHack-Libre
+
+.SH AUTHOR 
+Umar Ba <jUmarB@protonmail.com>  <github.com/Jukoo> 
+
+.SH COPYRIGHT
+Copyright (c) 2025 KerHack-Libre.  
+This is free software with ABSOLUTELY NO WARRANTY.
+
+.SH See Also 
+\fB  bc(1)\fR 
