@@ -69,7 +69,7 @@ int main(int ac , char **av)
   if(ac == 3)
   {
     char *short_flags =  *(av+(ac-2)) ; 
-    int  value = strtol(*(av+(ac-1)) ,  __nptr , 012) ; 
+    unsigned int value = strtol(*(av+(ac-1)) ,  __nptr , 012) ; 
     if(!value)  
       value =(unsigned char) (**(av+(ac-1))  & 0xff ); 
 

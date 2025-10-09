@@ -71,6 +71,7 @@ extern char * program_invocation_short_name ;
 # define  pname  "bcv" 
 #endif 
 
+typedef  void (*user_prompt_custom_shell) (const char * __restrict__) ;  
 
 /* @fn bcrepl_shell(const char * _Nullable) 
  * @brief  define the shell prompt 
