@@ -115,7 +115,6 @@ static __inline__ void print_symbol_seperation(void)
 }  
 
 
-
 /* @fn __common_prototype_base_convertion(int  , int  , struct __bcb_t*) 
  * @brief  common logic  used by the bc_* function to convert  
  * @param  int  - the value 
@@ -146,8 +145,8 @@ static void __common_prototype_base_convertion(int value , int base ,  struct __
 __BCX(void) bc_binv2(int __value, int __show_notation) ; 
 
 __BCX(char *) bc_bin(int value) ;  
-__BCX(char *) bc_oct(int __value) ; 
-__BCX(char *) bc_hex(int __value)  ; 
+__BCX(char *) bc_oct(int value) ; 
+__BCX(char *) bc_hex(int value) ; 
 
 
 
