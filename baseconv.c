@@ -2,12 +2,8 @@
  * @brief base convertion  (base 2-8-16)
  */ 
 #include <stdlib.h>
-#include <stdio.h> 
-#include <limits.h> 
-#include <unistd.h>
-#include <string.h>
-#include <poll.h>
-#include <assert.h> 
+#include <stdio.h>
+#include <string.h> 
 #include "baseconv.h" 
 
 char bc_global_buffer[0xff]={0} ;  
