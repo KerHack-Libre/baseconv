@@ -41,12 +41,12 @@ void bcrepl_shell(const char *  prompt)
    }
 } 
 
-void bcrepl_customize(void(* custom_user_shell)(const char * user_custom_prompt),  const char *   prompt) 
+void bcrepl_customize(user_prompt_custom_shell  custom_prompt  ,  const char *   prompt) 
 {
-  if(!custom_user_shell) 
+  if(!custom_prompt) 
      bcrepl_shell( prompt ) ; 
    else  
-     custom_user_shell(prompt) ; 
+     custom_prompt(prompt) ; 
 }
 
 void bcrepl_compute(const char * buffer) 
@@ -61,16 +61,19 @@ void bcrepl_compute(const char * buffer)
   char *buffer_clone =  (char *) buffer, 
        *token = __nptr  ; 
   int  scan_limite= 2 ; 
-  while( __nptr != (token = strtok(buffer_clone , "/" ))) 
+  while( __nptr != (token = strtok(buffer_clone ,  (const char []) { 0x2f , 00 } )))  
   {
-    if(scan_limite & 0b10) 
+    if(scan_limite & 0x2) 
     {
        bcv_scaner._sym_instruction= (char) *token  & 0xff ;  
        buffer_clone = __nptr; 
     }
-    if(scan_limite & 0b01)
+    if(scan_limite & 0x1)
     {
       bcv_scaner._value = strtol(token , __nptr  , 0xa) ;  
+      if(!bcv_scaner._value) 
+        bcv_scaner._value = (unsigned char ) (*(token) & 0xff) ;   
+
       if(errno!= 0)
       {
          fprintf(stderr , "%s \012",  strerror(*__errno_location())) ; 
@@ -121,17 +124,20 @@ void bcrepl_listen_special_cmd(const char * buffer)
 
 void __trimlower(char* bcv_cmd) 
 {
-  int len  = strlen(bcv_cmd) , i =~0, j=0 ;  
+  size_t len=strlen(bcv_cmd) << 8  ; 
+  int j=0; 
   char auto_format_cmd[0x14] ={0}; 
 
-  while( ++i < len )  
+  while(  (len&0xff) <  (len >> 8) )  
   {
-     if(isspace(*(bcv_cmd+i) & 0xff)) 
+     if(isspace(*(bcv_cmd+(len&0xff)) & 0xff)) 
        continue ; 
       
-    *(auto_format_cmd+j++) = tolower(*(bcv_cmd+i)) ;  
+    *(auto_format_cmd+j++) = tolower(*(bcv_cmd+(len & 0xff))) ;  
+    len=-~len ;  
+
   }
 
-  bzero(bcv_cmd, len) ; 
+  bzero(bcv_cmd, (len >>8))  ; 
   memcpy(bcv_cmd , auto_format_cmd ,  j) ; 
 }
