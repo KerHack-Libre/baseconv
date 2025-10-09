@@ -32,9 +32,12 @@ int main(int ac , char **av)
     bcrepl_shell(__nptr); 
     goto _bcv_end; 
 
-  //!NOTICE : probably -h and -v (help and version)  
+  } 
+
   //!NOTICE : long  options are note handled ... 
-  }else {
+  //!NOTICE : probably -h and -v (help and version)  
+  if( ac == 2 )
+  {
     
     char * short_flags = *(av+(ac-1)) ; 
     if( !(0x2d ^  *(short_flags)& 0xff))  

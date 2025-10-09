@@ -7,16 +7,6 @@
 #define  __BASECONV 
 
 #include <stdio.h> 
-#if defined(__linux__) 
-# if __glibc_has_attribute(warn_unused_result)  
-#   define  __mustcheck __attribute__((warn_unused_result)) 
-# else
-#   define  __mustcheck /*  NOTHING */ 
-# endif // __glibc_has_attribute 
-#else  
-# define  __mustcheck  /* NOTHING */ 
-#endif //! __linux__  
-
 #if defined(__cpluscplus)
 # define  __BCEXPORT  extern "C" 
 #else 
@@ -116,7 +106,7 @@ static __inline__ int detect_bit_section_starting_group(int value)
 static __inline__ void print_symbol_seperation(void) 
 {
    static int i = 0;
-   if (i==4)
+   if (!(i^4)) 
    {
      printf("%c",  __symbole_sep) ;
      i&=~i ; 
@@ -155,9 +145,9 @@ static void __common_prototype_base_convertion(int value , int base ,  struct __
  */ 
 __BCX(void) bc_binv2(int __value, int __show_notation) ; 
 
-__BCX(__mustcheck char *) bc_bin(int value) ;  
-__BCX(__mustcheck char *) bc_oct(int __value) ; 
-__BCX(__mustcheck char *) bc_hex(int __value)  ; 
+__BCX(char *) bc_bin(int value) ;  
+__BCX(char *) bc_oct(int __value) ; 
+__BCX(char *) bc_hex(int __value)  ; 
 
 
 
