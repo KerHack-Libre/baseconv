@@ -1,0 +1,132 @@
+.TH BCV 1 "Octobre 2025" "Version 1.0.1" "Commandes Utilisateur"
+.SH NOM
+bcv \- convertir des nombres en représentation binaire, octale ou hexadécimale
+.SH SYNOPSIS
+.B bcv
+[\fBOPTION\fR] ... <\fINOMBRE\fR>
+.SH DESCRIPTION
+.B bcv
+est un utilitaire léger en ligne de commande permettant de convertir des valeurs numériques entre différentes bases, notamment binaire (base 2), octale (base 8) et hexadécimale (base 16).  
+Il inclut un mode interactif intégré pour effectuer des conversions rapides, idéal pour les développeurs ou administrateurs système.  
+.PP
+Très utile pour effectuer des conversions numériques rapides sans recourir à des outils lourds.
+.SH BASES
+\fBLa base 10\fR (décimale) est prise en charge par défaut.
+.TP
+\fBBase 2\fR
+Représentation binaire (chiffres 0–1)
+.TP
+\fBBase 8\fR
+Représentation octale (chiffres 0–7)
+.TP
+\fBBase 16\fR
+Représentation hexadécimale (chiffres 0–15, c’est-à-dire 0–f)
+.SH UTILISATION
+.nf
+Utilisation : bcv [OPTION] ... <NOMBRE>
+
+Convertir un nombre vers une base spécifique.
+
+Ligne directe | Mode interactif | Description
+---------------|----------------|----------------------------+
+-b <nombre>   | b/<nombre>     | Conversion en binaire      |
+-x <nombre>   | x/<nombre>     | Conversion en hexadécimal  |
+-o <nombre>   | o/<nombre>     | Conversion en octal        |
+              | exit ou quit   | Quitter le mode interactif |
+-------------------------------------------------------------+
+-v, 'v' ou '!'   Affiche la version du programme
+-h, 'h' ou '?'   Affiche cette aide
+.fi
+.SH MODE INTERACTIF
+Lorsqu’il est lancé sans argument, \fBbcv\fR entre en mode interactif.  
+Vous pouvez alors saisir des commandes telles que :
+.RS
+b/<nombre>  → convertir en binaire  
+.br
+o/<nombre>  → convertir en octal  
+.br
+x/<nombre>  → convertir en hexadécimal  
+.br
+exit ou quit → quitter le shell interactif  
+.RE
+.SH EXEMPLES
+Voici quelques exemples d’utilisation de \fBbcv\fR :
+.TP
+Convertir 255 en hexadécimal :
+.RS
+bcv -x 255
+.RE
+.TP
+Convertir 42 en binaire en mode interactif :
+.RS
+bcv  
+.br
+b/42
+.RE
+.TP
+Conversion directe :
+.RS
+bcv 12  
+.br
+Sortie :
+.nf
+DEC : 12
+HEX : 0xC
+OCT : 0o14
+BIN : 0b1100
+.fi
+.RE
+.TP
+Convertir un caractère :
+.RS
+bcv E  
+.br
+Sortie :
+.nf
+DEC : 69
+HEX : 0x45
+OCT : 0o105
+BIN : 0b1000101
+.fi
+.RE
+.PP
+.B bcv
+peut détecter automatiquement la base du nombre d’entrée et afficher les équivalents dans les autres bases.
+.TP
+Exemples :
+.RS
+bcv 0xfeed  
+.nf
+DEC : 65261
+OCT : 0o177355
+BIN : 0b1111111011101101
+.fi
+.PP
+bcv 0o23  
+.nf
+DEC : 19
+HEX : 0x13
+BIN : 0b10011
+.fi
+.PP
+bcv 0b010011  
+.nf
+DEC : 19
+HEX : 0x13
+OCT : 0o23
+.fi
+.RE
+.SH VERSION
+BaseConverter (bcv) version 1.0.1  
+par KerHack-Libre
+.SH AUTEUR
+Umar Ba <jUmarB@protonmail.com>  
+.br
+<https://github.com/Jukoo>
+.SH COPYRIGHT
+Copyright (c) 2025 KerHack-Libre  
+.br
+Ce logiciel est libre et distribué SANS AUCUNE GARANTIE.
+.SH VOIR AUSSI
+\fBbc\fR(1)
+
