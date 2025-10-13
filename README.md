@@ -1,110 +1,161 @@
 # Baseconv  <img src="https://img.shields.io/badge/With%20Python%20Support-yellow?style=for-the-badge&logo=python" width="152"  height="" alt="Python-Support" style="margin-right:20px"  align="right"/>
 
-Converts to different numerical bases such as binary (2), octal (8)  and hexadecimal (16)  with built-in interactive shell. 
 
-- base 2 -> for binary representation 0 to 1  
-- base 8 -> for octal representation 0 to 7 base 
-- base 16 -> for hexadecimal representation 0 to 15 (f) 
+# bcv — Base Converter CLI
 
-#### Setting Up Ecosystem or Testing Environment 
+**bcv** (*Base Converter*) est un outil en ligne de commande simple, rapide et libre, conçu pour convertir des nombres entre différentes bases numériques : **binaire**, **octale**, **décimale** et **hexadécimale**.
 
-There are two alternatives:  
+> Développé par **KerHack-Libre**, dans un esprit **éducatif et pratique**, pour aider chacun à acquérir une **base solide en numérisation informatique** — la fondation de tout système logiciel.
 
-**1** - Build On your direct host 
-
-**2** - Or on a dedicated environment (for testing and a quick tour).  
-
-**The ecosystem chosen to build the project is based on the [meson build system](https://mesonbuild.com/index.html)**
-
-1 - Direct Host 
 ---
-It is therefore strongly recommended to have meson build available on your machine.
-Here are a few commands to type 
-```bash 
-$ > meson setup build # to build the project 
-$ > meson compile -C build # to compile the project  
-```
-The Executable w'ill be stored in build directory `./build/bcv`  
 
-2 - Pre-build or Dedicated Environment 
----  
-By the way, there's already a minimalistic **pre-build environment** for those who want to test in Docker or Chroot.
-As you may have noticed, there's no Docker file in the repository, because we want to launch the environment quickly 
-without doing a full Docker command. 
+## Objectif du projet
 
-We've already provided a script to export the environment to a local Docker image.~(no Docker build , no Docker pull  no Docker anything)~
-Here's a script named `build_context.sh` in the `context` directory. 
-Just run the script. 
-```bash 
-# go to the context directory and I assume you've given the right permission 
-$ > ./build_context.sh 
-```  
-To clarify This  script  export the `rootfs.tar.xz` archive  directly to  Local Docker images and at the end generate a folder named `rootfs`,
-that you can use also. See (2- A Change Root or ...). 
+Ce projet est né d’un besoin simple mais fondamental :
+**comprendre, manipuler et visualiser les bases numériques** qui sont au cœur de tout ce que fait un ordinateur.
 
-This script will generate 2 environments of your choice: 
-1 - docker image directly available on your host, no need to docker pull 
-just run... 
-```bash 
-$ docker run -ti bcv:testing bash # to run
+> Une chose aussi basique peut ouvrir des portes incroyables sur la compréhension du fonctionnement interne des machines — et même aider à créer de meilleurs logiciels.
+
+**bcv** n’est pas qu’un convertisseur :
+c’est un petit compagnon du quotidien pour les développeurs, étudiants, hackers, ou passionnés de bas niveau.
+Je l’utilise moi-même chaque jour pour :
+- inspecter et déboguer  des  signature sur des fichiers **fichiers binaires**
+- ou simplement vérifier rapidement une conversion en **binaire / hex / octal** sans lancer d’outil lourd.
+
+--- 
+
+### Dimension éducative
+
+Comprendre les bases numériques, c’est comprendre la langue native des ordinateurs.
+
+**bcv** a été conçu dans un but éducatif: 
+
+pour initier les étudiants et curieux aux bases du système de numérisation informatique ;
+
+pour permettre aux développeurs de visualiser concrètement ce qui se cache derrière les chiffres et les octets ;
+
+et pour montrer que même un petit outil simple peut être une porte d’entrée vers la programmation système et la conception logicielle.
+
+## Fonctionnalités
+
+- Conversion instantanée entre **bases 2, 8, 10 et 16**
+- **Shell interactif** intégré (`b/`, `o/`, `x/` ou `exit`)
+- **Détection automatique** du format d’entrée (`0b`, `0o`, `0x`)
+- ⚙️ **Compact**, **rapide** et **sans dépendance**
+- Parfait pour l’apprentissage, le scripting et le débogage
+- Compatible **Unix/Linux**, compilable avec **Clang** ou **GCC**
+
+---
+
+## Installation
+
+### 🔧 Depuis la source
+
+```bash
+git clone https://github.com/KerHack-Libre/baseconv.git
+cd baseconv
+
+meson setup build 
+meson install -C build  
+
+
+
+
+## Utilisation 
+### ligne de commande 
+
+```bash
+bcv [OPTION] <NOMBRE> 
+
+| Option         | Exemple     | Description              |
+| :------------- | :---------- | :----------------------- |
+| `-b <nombre>`  | `bcv -b 42` | Convertir en binaire     |
+| `-o <nombre>`  | `bcv -o 42` | Convertir en octal       |
+| `-x <nombre>`  | `bcv -x 42` | Convertir en hexadécimal |
+| `-v`, `v`, `!` |             | Affiche la version       |
+| `-h`, `h`, `?` |             | Affiche l’aide           |
+
 ``` 
-2 - A Change Root or chroot environment is available in most Unix environments. 
-    After `build_context.sh` has finished running, a `rootfs` directory will be available. 
 
-To lock in : 
+### Mode Interactive 
+
+Lancer simplement 
 ```bash 
-$ > sudo  chroot rootfs bash 
-``` 
-And there you are!  The command is available in whole environment 
-just type  `bcv -h` 
-
-See [USE](#USE) section bellow for more info .
-
-#### Use
-
-There are 2 modes of use 
-An interactive mode &  Simple command-line mode 
-
-*Simple Command-line mode 
-
-just do  
-```bash 
-bcv [option] <numeric value> 
-```  
-e.g 
-```bash 
-$ bcv -o 12 # for octal representation  
-``` 
-
-> Type `bcv -h` to display help. 
-
-
-*For interactive mode  
-
-If no argument is supplied, interactive mode is launched by default. 
-here's an example: 
-
-```bash 
-$ bcv -b/<number>  
-$ bcv -o/<number> 
-$ bcv -x/<number>   
+bcv  
 ```
-e.g: 
+Puis entrer les commandes : 
 
 ```bash 
-$ bcv # launch in interactive mode 
-
-[1] bcv > x/100
-     |-> 0x64
-[2] bcv > b/100
-     |->0b0110.0100
-[3] bcv > ...
+b/42       → convertit en binaire
+x/255      → convertit en hexadécimal
+o/77       → convertit en octal
+exit       → quitte le shell
 ```
 
-*To exit, type quit or exit (not case-sensitive).
+###  mode Rapide 
 
-Feel free to contribute or declare issue to improve  the repository 
+#### Exemples 
 
-We ❤️  Computers at all Levels. 
+```bash 
+$ bcv 12
+DEC : 12
+HEX : 0xC
+OCT : 0o14
+BIN : 0b1100
 
-From Senegal. 🇸🇳
+$ bcv 0xFEED
+DEC : 65261
+OCT : 0o177355
+BIN : 0b1111111011101101
+
+$ bcv E
+DEC : 69
+HEX : 0x45
+OCT : 0o105
+BIN : 0b1000101
+
+```
+
+Une Page de manuel est incluse 
+
+```bash  
+man ./docs/bcv.1
+```
+Elle décrit en détail les options, les exemples et le fonctionnement du shell interactif. 
+
+## Exemple d’intégration Bash
+
+```bash 
+#!/bin/bash
+# Exemple simple : conversion rapide dans un script
+read -p "Entrer un nombre : " n
+bcv $n
+```
+
+## Auteur
+
+Umar Ba
+jUmarB@protonmail.com
+
+🌐 github.com/Jukoo
+
+## ⚖️ Licence
+
+Copyright (c) 2025
+KerHack-Libre — Logiciel libre et distribué sans AUCUNE GARANTIE.
+
+## À propos de KerHack-Libre
+
+KerHack-Libre est une initiative qui vise à promouvoir des outils systèmes libres, légers et éducatifs,
+inspirés de la philosophie Unix et du pragmatisme du libre.
+
+« Faire simple, efficace et libre. » 
+
+## Contribuer
+
+Les contributions sont toujours les bienvenues !
+Si tu veux participer :
+
+* Ouvre une issue pour proposer une amélioration
+* Soumets une pull request
+* Ou simplement partage bcv avec d’autres passionnés du shell ! 
