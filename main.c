@@ -19,9 +19,10 @@
 
 #define  BIN (0x62) 
 #define  OCT (0x6f<<8) 
-#define  HEX (0x78<<16) 
+#define  HEX (0x78<<16)
+#define  DEC (0x64<<24)  
 
-#define  ALLBASE_ENABLE (BIN|OCT|HEX) 
+#define  ALLBASE_ENABLE (BIN|OCT|HEX|DEC)  
 
 
 void bcv_usage(unsigned char const) ;            /* [[noreturn]] */
@@ -48,17 +49,17 @@ int main(int ac , char **av)
     if( !(0x2d ^  *(short_flags)& 0xff))  
       bcv_usage(*(short_flags+1) & 0xff); 
   
-    if(!(0x30) ^(*(short_flags) & 0xff))
+    if(!(0x30 ^(*(short_flags) & 0xff))) 
       bcv_guess_base(short_flags) ;  
       
-
     unsigned int  value =  strtol(short_flags , (void  *)00 , 10) ;  
     if (!value)  
       value = (unsigned char)( *(short_flags) & 0xff) ;   
 
+    bcv_out(bc_dec(value),DEC); 
     bcv_out(bc_hex(value),HEX); 
     bcv_out(bc_oct(value),OCT);  
-    bcv_out(bc_bin(value),BIN); 
+    bcv_out(bc_bin(value),BIN);  
     
     goto _bcv_end ; 
   } 
@@ -140,6 +141,9 @@ void bcv_guess_base(const char * restrict num)
        goto _end; 
   }
 
+   
+  if(options  & DEC) 
+    bcv_out(bc_dec(value) , DEC) ; 
 
   if(options & HEX)  
     bcv_out(bc_hex(value) , HEX) ; 
@@ -149,7 +153,8 @@ void bcv_guess_base(const char * restrict num)
 
   if(options & BIN) 
     bcv_out(bc_bin(value), BIN) ; 
- 
+
+
 
 
 _end: 
