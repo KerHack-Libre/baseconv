@@ -14,12 +14,18 @@
 #include "baseconv.h" 
 #include "bcvrepl.h"
 
-
-
 #define  bcv_out(__expression ,__mode) \
-  fprintf(stdout , "%s : %s\012", __mode ,  __expression)   
+  fprintf(stdout , "%s : %s\012", #__mode ,  __expression)   
 
-void bcv_usage(unsigned char const) ; /* [[noreturn]] */
+#define  BIN (0x62) 
+#define  OCT (0x6f<<8) 
+#define  HEX (0x78<<16) 
+
+#define  ALLBASE_ENABLE (BIN|OCT|HEX) 
+
+
+void bcv_usage(unsigned char const) ;            /* [[noreturn]] */
+void bcv_guess_base(const char * __restrict__) ; /* [[noreturn]] */
 
 int main(int ac , char **av) 
 { 
@@ -37,20 +43,22 @@ int main(int ac , char **av)
   //!NOTICE : probably -h and -v (help and version)  
   if( ac == 2 )
   {
-    
     char * short_flags = *(av+(ac-1)) ; 
+    
     if( !(0x2d ^  *(short_flags)& 0xff))  
       bcv_usage(*(short_flags+1) & 0xff); 
-    
-    
+  
+    if(!(0x30) ^(*(short_flags) & 0xff))
+      bcv_guess_base(short_flags) ;  
+      
 
     unsigned int  value =  strtol(short_flags , (void  *)00 , 10) ;  
     if (!value)  
       value = (unsigned char)( *(short_flags) & 0xff) ;   
 
-    bcv_out(bc_hex(value),"HEX"); 
-    bcv_out(bc_oct(value),"OCT");  
-    bcv_out(bc_bin(value),"BIN"); 
+    bcv_out(bc_hex(value),HEX); 
+    bcv_out(bc_oct(value),OCT);  
+    bcv_out(bc_bin(value),BIN); 
     
     goto _bcv_end ; 
   } 
@@ -67,13 +75,13 @@ int main(int ac , char **av)
       switch( (*(short_flags+1)  &0xff))   
       {
         case 'x': 
-          bcv_out(bc_hex(value), "HEX"); 
+          bcv_out(bc_hex(value),HEX); 
           break; 
         case 'o': 
-          bcv_out(bc_oct(value) ,"OCT"); 
+          bcv_out(bc_oct(value),OCT); 
           break; 
         case 'b': 
-          bcv_out(bc_bin(value) ,"BIN"); 
+          bcv_out(bc_bin(value),BIN); 
           break; 
         case 'h': printf("%s\012%s\012",USAGE, BCV_VERSION_STR) ;break; 
         case 'v': printf("%s\012%s\012", BCV_STARTUP_MESG , BCV_VERSTRLONG);break; 
@@ -103,5 +111,47 @@ void bcv_usage(unsigned char const char_flag)
               break; 
   }
 
+  exit(EXIT_SUCCESS) ; 
+} 
+
+
+void bcv_guess_base(const char * restrict num) 
+{ 
+
+  unsigned int  options = ALLBASE_ENABLE, 
+                value   = 0  ; 
+  char indicator = tolower(*(num+1)  & 0xff ) ; 
+  
+  switch(indicator) 
+  {
+     case 'x' :  
+       options&=~HEX; 
+       value = strtol((num+2), (void *)0 , 0x10) ;
+       break; 
+     case 'o' :
+       options&=~OCT ;  
+       value = strtol((num+2), (void *)0 , 010);
+       break; 
+     case 'b' :
+       options&=~BIN ;
+       value = strtol((num+2), (void *)0 , 2) ;
+       break; 
+     default : 
+       goto _end; 
+  }
+
+
+  if(options & HEX)  
+    bcv_out(bc_hex(value) , HEX) ; 
+
+  if(options & OCT) 
+    bcv_out(bc_oct(value) , OCT) ; 
+
+  if(options & BIN) 
+    bcv_out(bc_bin(value), BIN) ; 
+ 
+
+
+_end: 
   exit(EXIT_SUCCESS) ; 
 }
