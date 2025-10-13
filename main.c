@@ -16,12 +16,10 @@
 
 
 
-//!TODO : Build  argparse library  that handle arguments 
-//!NOTICE : I'it will be a seperate project 
-
-
 #define  bcv_out(__expression ,__mode) \
   fprintf(stdout , "%s : %s\012", __mode ,  __expression)   
+
+void bcv_usage(unsigned char const) ; /* [[noreturn]] */
 
 int main(int ac , char **av) 
 { 
@@ -42,18 +40,9 @@ int main(int ac , char **av)
     
     char * short_flags = *(av+(ac-1)) ; 
     if( !(0x2d ^  *(short_flags)& 0xff))  
-    {
-      switch((*(short_flags+1)  & 0xff)) 
-      {
-        case 'h': printf("%s\012%s\12",USAGE, BCV_VERSION_STR) ;break; 
-        case 'v': printf("%s\012%s\012", BCV_STARTUP_MESG , BCV_VERSTRLONG);break; 
-        default:
-                 fprintf(stderr, "unknow option \n");
-                 printf("%s\012%s\012",USAGE,  BCV_STARTUP_MESG) ;break; 
-                 break ; 
-      }
-      goto _bcv_end;  
-    }
+      bcv_usage(*(short_flags+1) & 0xff); 
+    
+    
 
     unsigned int  value =  strtol(short_flags , (void  *)00 , 10) ;  
     if (!value)  
@@ -99,4 +88,20 @@ int main(int ac , char **av)
 _bcv_end: 
 
   return EXIT_SUCCESS ; 
+} 
+
+
+
+void bcv_usage(unsigned char const char_flag) 
+{
+  switch(char_flag) 
+  {
+    case 'h': printf("%s\012%s\12",USAGE, BCV_VERSION_STR) ;break; 
+    case 'v': printf("%s\012%s\012", BCV_STARTUP_MESG , BCV_VERSTRLONG);break; 
+    default:  fprintf(stderr, "unknow option \n");
+              printf("%s\012%s\012",USAGE,  BCV_STARTUP_MESG) ;
+              break; 
+  }
+
+  exit(EXIT_SUCCESS) ; 
 }
