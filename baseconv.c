@@ -33,7 +33,14 @@ char * bc_bin(int value)
    SHOWBIN(brep._buff , brep._index , bc_global_buffer) ;  
   
    return bc_global_buffer ; 
-} 
+}
+
+char * bc_dec(int value) 
+{
+  bzero(bc_global_buffer , 0xff); 
+  sprintf(bc_global_buffer,  "%i" ,  value); 
+  return bc_global_buffer ; 
+}
 
 void  bc_binv2(int value , int show_notation) 
 { 

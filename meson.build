@@ -2,7 +2,7 @@
 # Author Umar Ba <jUmarB@protonmail.com> <github/Jukoo> 
 
 project('bcv', 'c',
-  version : '1.0.4',
+  version : '1.2.4',
   license:['GPL-3.0-only'], 
   license_files:['LICENSE'], 
   default_options : ['c_std=gnu99','warning_level=3','bindir=/usr/local/bin'])

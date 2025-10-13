@@ -44,7 +44,6 @@
 #define SHOWBIN(__expr , __it,__out)\
   SHOWBASE_EXPR(__expr ,__it, "0b","%i",  __out) 
 
-
 #define  USAGE "\
   Usage : bcv [OPTION] ... <NUMBER>\n\
   Convert Number to specific base\n\
@@ -147,6 +146,7 @@ __BCX(void) bc_binv2(int __value, int __show_notation) ;
 __BCX(char *) bc_bin(int value) ;  
 __BCX(char *) bc_oct(int value) ; 
 __BCX(char *) bc_hex(int value) ; 
+__BCX(char *) bc_dec(int value) ; 
 
 
 
