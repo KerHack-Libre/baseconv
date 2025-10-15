@@ -1,7 +1,10 @@
-# Baseconv  <img src="https://img.shields.io/badge/With%20Python%20Support-yellow?style=for-the-badge&logo=python" width="152"  height="" alt="Python-Support" style="margin-right:20px"  align="right"/>
+### Baseconv  Bcv  
+<img src="./assets/logo/bcvlogo.png" width="300"  alt="bcv-logo" align="center"/>   
+
+<img src="https://img.shields.io/badge/With%20Python%20Support-yellow?style=for-the-badge&logo=python" width="152"  height="" alt="Python-Support" style="margin-right:20px"  align="right"/>
 
 
-# bcv — Base Converter CLI
+#### Apropos du Base Converter 
 
 **bcv** (*Base Converter*) est un outil en ligne de commande simple, rapide et libre, conçu pour convertir des nombres entre différentes bases numériques : **binaire**, **octale**, **décimale** et **hexadécimale**.
 
@@ -9,7 +12,7 @@
 
 ---
 
-## Objectif du projet
+##### Objectif du projet
 
 Ce projet est né d’un besoin simple mais fondamental :
 **comprendre, manipuler et visualiser les bases numériques** qui sont au cœur de tout ce que fait un ordinateur.
@@ -24,7 +27,7 @@ Je l’utilise moi-même chaque jour pour :
 
 --- 
 
-### Dimension éducative
+##### Dimension éducative
 
 Comprendre les bases numériques, c’est comprendre la langue native des ordinateurs.
 
@@ -36,33 +39,31 @@ pour permettre aux développeurs de visualiser concrètement ce qui se cache der
 
 et pour montrer que même un petit outil simple peut être une porte d’entrée vers la programmation système et la conception logicielle.
 
-## Fonctionnalités
+##### Fonctionnalités
 
 - Conversion instantanée entre **bases 2, 8, 10 et 16**
 - **Shell interactif** intégré (`b/`, `o/`, `x/` ou `exit`)
 - **Détection automatique** du format d’entrée (`0b`, `0o`, `0x`)
 - ⚙️ **Compact**, **rapide** et **sans dépendance**
 - Parfait pour l’apprentissage, le scripting et le débogage
-- Compatible **Unix/Linux**, compilable avec **Clang** ou **GCC**
-
+- Compatible **Unix/Linux**, compilable avec **GCC**
 ---
 
-## Installation
+##### Installation
 
-### 🔧 Depuis la source
+######  Depuis la source
 
 ```bash
 git clone https://github.com/KerHack-Libre/baseconv.git
 cd baseconv
 
 meson setup build 
-meson install -C build  
+meson install -C build
+``` 
 
 
-
-
-## Utilisation 
-### ligne de commande 
+##### Utilisation 
+###### ligne de commande 
 
 ```bash
 bcv [OPTION] <NOMBRE> 
@@ -77,7 +78,7 @@ bcv [OPTION] <NOMBRE>
 
 ``` 
 
-### Mode Interactive 
+#### Mode Interactive 
 
 Lancer simplement 
 ```bash 
@@ -92,7 +93,7 @@ o/77       → convertit en octal
 exit       → quitte le shell
 ```
 
-###  mode Rapide 
+#### mode Rapide 
 
 #### Exemples 
 
@@ -123,7 +124,7 @@ man ./docs/bcv.1
 ```
 Elle décrit en détail les options, les exemples et le fonctionnement du shell interactif. 
 
-## Exemple d’intégration Bash
+#### Exemple d’intégration Bash
 
 ```bash 
 #!/bin/bash
@@ -132,30 +133,32 @@ read -p "Entrer un nombre : " n
 bcv $n
 ```
 
-## Auteur
-
+#### Auteur
 Umar Ba
 jUmarB@protonmail.com
 
 🌐 github.com/Jukoo
 
-## ⚖️ Licence
+#### ⚖️ Licence
 
 Copyright (c) 2025
 KerHack-Libre — Logiciel libre et distribué sans AUCUNE GARANTIE.
 
-## À propos de KerHack-Libre
-
-KerHack-Libre est une initiative qui vise à promouvoir des outils systèmes libres, légers et éducatifs,
-inspirés de la philosophie Unix et du pragmatisme du libre.
-
-« Faire simple, efficace et libre. » 
-
-## Contribuer
+#### Contribuer
 
 Les contributions sont toujours les bienvenues !
 Si tu veux participer :
 
 * Ouvre une issue pour proposer une amélioration
 * Soumets une pull request
-* Ou simplement partage bcv avec d’autres passionnés du shell ! 
+* Ou simplement partage bcv avec d’autres passionnés du shell !
+
+#####  À propos de KerHack-Libre
+
+KerHack-Libre est une initiative qui vise à promouvoir des outils systèmes libres, légers et éducatifs,
+inspirés de la philosophie Unix et du pragmatisme du libre.
+
+« Faire simple, efficace et libre. »
+
+<img src="asserts/logo/khl1.png" width="100"  height="" alt="khlogo"  align="right"/>
+
