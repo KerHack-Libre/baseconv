@@ -47,7 +47,7 @@ static inline  __attribute__((constructor)) void init_tty(void)
 # define RED 
 # define YELLOW 
 # define  apply(__statement , __color_attr /*!ignored*/)  __statement
-#endif   
+#endif
 
 
 #define BCV_STARTUP_MESG \
@@ -82,7 +82,7 @@ bcrepl_shell(const char * _Nullable  __prompt)  ;
 
 
 bcvrepl_export void  
-bcrepl_customize(void(*__custom_user_shell)(const char * __user_custom_prompt) ,  const char  * __prompt) ; 
+bcrepl_customize(user_prompt_custom_shell,  const char  *   __restrict__ __prompt) ; 
 
 /* @fn bcrepl_compute(const char *  _NonNullable) 
  * @brief  compute the input 
