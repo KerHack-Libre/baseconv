@@ -30,8 +30,10 @@ add_project_arguments(
      '-Wunused-parameter',
      '-Warray-parameter'
      ) ,
-  language:'c'
-  )
+  # By default the bin representation with dot notation  is off
+  '-DBIN_NOTATION_VERSION=0' ,
+  language:'c',
+)
 
 
 curses_dep =  dependency('curses')

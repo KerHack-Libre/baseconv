@@ -24,9 +24,9 @@
 
 #define  ALLBASE_ENABLE (BIN|OCT|HEX|DEC)  
 
-
 void bcv_usage(unsigned char const) ;            /* [[noreturn]] */
 void bcv_guess_base(const char * __restrict__) ; /* [[noreturn]] */
+void bcv_print(unsigned int value, int) ;
 
 int main(int ac , char **av) 
 { 
@@ -36,33 +36,29 @@ int main(int ac , char **av)
   if (!(ac &~(1)))  
   { 
     bcrepl_shell(__nptr); 
-    goto _bcv_end; 
-
-  } 
-
+    goto _bcv_end;
+  }
+  
   //!NOTICE : long  options are note handled ... 
   //!NOTICE : probably -h and -v (help and version)  
   if( ac == 2 )
   {
     char * short_flags = *(av+(ac-1)) ; 
     
-    if( !(0x2d ^  *(short_flags)& 0xff))  
+    if( !(0x2d ^ (*(short_flags)& 0xff) ) )  
       bcv_usage(*(short_flags+1) & 0xff); 
   
-    if(!(0x30 ^(*(short_flags) & 0xff))) 
+    if(!(0x30 ^ (*(short_flags) & 0xff))) 
       bcv_guess_base(short_flags) ;  
       
     unsigned int  value =  strtol(short_flags , (void  *)00 , 10) ;  
-    if (!value)  
-      value = (unsigned char)( *(short_flags) & 0xff) ;   
+   if (!value)
+      value = (unsigned char)(*(short_flags)&0xff);
 
-    bcv_out(bc_dec(value),DEC); 
-    bcv_out(bc_hex(value),HEX); 
-    bcv_out(bc_oct(value),OCT);  
-    bcv_out(bc_bin(value),BIN);  
+   bcv_print(value , DEC | HEX | OCT | BIN) ;
     
     goto _bcv_end ; 
-  } 
+   
 
   if(ac == 3)
   {
@@ -71,7 +67,7 @@ int main(int ac , char **av)
     if(!value)  
       value =(unsigned char) (**(av+(ac-1))  & 0xff ); 
 
-    if( !(0x2d ^ *(short_flags)& 0xff))   
+    if( !(0x2d ^ (*(short_flags)& 0xff)))   
     {
       switch( (*(short_flags+1)  &0xff))   
       {
@@ -154,9 +150,23 @@ void bcv_guess_base(const char * restrict num)
   if(options & BIN) 
     bcv_out(bc_bin(value), BIN) ; 
 
-
-
-
 _end: 
   exit(EXIT_SUCCESS) ; 
+}
+
+
+void bcv_print(unsigned int value  , int base_option)
+{
+    if(base_option &  DEC)
+	bcv_out(bc_dec(value), DEC);
+
+    if(base_option &  HEX)
+	bcv_out(bc_hex(value), HEX);
+
+    if(base_option & OCT)
+	bcv_out(bc_oct(value) , OCT);
+
+    if(base_option &  BIN)
+	bcv_out(bc_bin(value) , BIN) ;
+    
 }
