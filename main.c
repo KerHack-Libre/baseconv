@@ -35,7 +35,8 @@ int main(int ac , char **av)
   //!NOTICE : when no argument was provided  the repl is automaticaly launched
   if (!(ac &~(1)))  
   { 
-    bcrepl_shell(__nptr); 
+    //! launch interactive shell 
+    bcrepl_shell(__nptr);    
     goto _bcv_end;
   }
   
@@ -58,7 +59,7 @@ int main(int ac , char **av)
    bcv_print(value , DEC | HEX | OCT | BIN) ;
     
     goto _bcv_end ; 
-   
+  } 
 
   if(ac == 3)
   {
@@ -96,6 +97,20 @@ _bcv_end:
 } 
 
 
+void bcv_print(unsigned int value  , int base_option)
+{
+    if(base_option &  DEC)
+      bcv_out(bc_dec(value), DEC);
+
+    if(base_option &  HEX)
+      bcv_out(bc_hex(value), HEX);
+
+    if(base_option & OCT)
+      bcv_out(bc_oct(value) , OCT);
+
+    if(base_option & BIN)
+      bcv_out(bc_bin(value) , BIN);
+}
 
 void bcv_usage(unsigned char const char_flag) 
 {
@@ -155,18 +170,3 @@ _end:
 }
 
 
-void bcv_print(unsigned int value  , int base_option)
-{
-    if(base_option &  DEC)
-	bcv_out(bc_dec(value), DEC);
-
-    if(base_option &  HEX)
-	bcv_out(bc_hex(value), HEX);
-
-    if(base_option & OCT)
-	bcv_out(bc_oct(value) , OCT);
-
-    if(base_option &  BIN)
-	bcv_out(bc_bin(value) , BIN) ;
-    
-}

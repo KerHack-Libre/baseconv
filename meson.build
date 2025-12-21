@@ -2,7 +2,7 @@
 # Author Umar Ba <jUmarB@protonmail.com> <github/Jukoo> 
 
 project('bcv', 'c',
-  version : '1.2.4',
+  version : '1.2.5',
   license:['GPL-3.0-only'], 
   license_files:['LICENSE'], 
   default_options : ['c_std=gnu99','warning_level=3','bindir=/usr/local/bin'])
@@ -38,11 +38,11 @@ add_project_arguments(
 
 curses_dep =  dependency('curses')
 bcv_sources=[
-  'baseconv.c',  # Contain the convertion  methode 
-  'bcvrepl.c'    # Contain the repl  shell 
+  'src/baseconv.c',  # Contain the convertion  methode 
+  'src/bcvrepl.c'    # Contain the repl  shell 
   ]
 
-#install_man(['manpage/bcv.1'])
+install_man(['doc/manpage/bcv.1'])
 #
 #NOTICE : The logic  of  baseconv  is builded as External Shared and static library
 #         to make it more extensible 
@@ -50,6 +50,7 @@ baseconv_shared_lib  = both_libraries('bcv', bcv_sources, version:meson.project_
 
 executable(meson.project_name(),
            'main.c',
+           include_directories:['src'], 
            link_with: baseconv_shared_lib,
            dependencies:curses_dep,
            install : true)
