@@ -28,7 +28,7 @@
 
 #define SHOWBASE_EXPR(__expr, __it , __prefix ,__fmt, __out){\
   strcat(__out , __prefix); \
-  int i =strlen(__prefix); \
+  size_t i =strlen(__prefix); \
   while(0 != __it){\
     sprintf( (__out+i) ,__fmt, *(__expr+ __it-1));\
     __it+=~(__it^__it),  i=-~i ;\
@@ -74,7 +74,7 @@ extern char bc_global_buffer[0xff] ;
  * @param  int - the value 
  * @return int - the section(th) index that contain the value 
  */
-static __inline__ int detect_bit_section_starting_group(int value) 
+static __inline__ int detect_bit_section_starting_group(unsigned int value) 
 {
   
   size_t vsize =  _SIZE(value) ; 
@@ -120,7 +120,7 @@ static __inline__ void print_symbol_seperation(void)
  * @param  int  - the base 
  * @param  struct __bcb_t *  - bcb data structure  hold the buffer in  the length 
  */ 
-static void __common_prototype_base_convertion(int value , int base ,  struct __bcb_t  *  bcb)  
+static void __common_prototype_base_convertion(unsigned int value , int base ,  struct __bcb_t  *  bcb)  
 { 
    int  remain  = 0;  
    while (0!= value) 
@@ -141,12 +141,12 @@ static void __common_prototype_base_convertion(int value , int base ,  struct __
  * @param   int  -  the value  
  * @param   int  -  would doyou like to show annotation dot "."
  */ 
-__BCX(void) bc_binv2(int __value, int __show_notation) ; 
+__BCX(void) bc_binv2(unsigned int __value, int __show_notation) ; 
 
-__BCX(char *) bc_bin(int value) ;  
-__BCX(char *) bc_oct(int value) ; 
-__BCX(char *) bc_hex(int value) ; 
-__BCX(char *) bc_dec(int value) ; 
+__BCX(char *) bc_bin(unsigned int value) ;  
+__BCX(char *) bc_oct(unsigned int value) ; 
+__BCX(char *) bc_hex(unsigned int value) ; 
+__BCX(char *) bc_dec(unsigned int value) ; 
 
 
 

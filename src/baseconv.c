@@ -8,7 +8,7 @@
 
 char bc_global_buffer[0xff]={0} ;  
 
-char *  bc_hex(int value) 
+char *  bc_hex(unsigned int value) 
 { 
   bzero(bc_global_buffer, 0xff) ; 
   struct __bcb_t  xrep ={0};   
@@ -16,7 +16,7 @@ char *  bc_hex(int value)
    SHOWHEX(xrep._buff , xrep._index , bc_global_buffer) ; 
    return bc_global_buffer ;  
 }
-char * bc_oct(int value)
+char * bc_oct(unsigned  int value)
 {
    bzero(bc_global_buffer, 0xff) ; 
    struct __bcb_t  orep = {0} ;  
@@ -25,7 +25,7 @@ char * bc_oct(int value)
    return  bc_global_buffer; 
 }
 
-char * bc_bin(int value) 
+char * bc_bin(unsigned  value) 
 { 
    bzero(bc_global_buffer, 0xff) ; 
    struct __bcb_t  brep ={0};  
@@ -35,14 +35,14 @@ char * bc_bin(int value)
    return bc_global_buffer ; 
 }
 
-char * bc_dec(int value) 
+char * bc_dec(unsigned int value) 
 {
   bzero(bc_global_buffer , 0xff); 
   sprintf(bc_global_buffer,  "%i" ,  value); 
   return bc_global_buffer ; 
 }
 
-void  bc_binv2(int value , int show_notation) 
+void  bc_binv2(unsigned int value , int show_notation) 
 { 
   int section_bin=_SIZE(value)-(detect_bit_section_starting_group(value) *4);
   while (  0 < section_bin  ) 

@@ -42,6 +42,7 @@ int main(int ac , char **av)
   
   //!NOTICE : long  options are note handled ... 
   //!NOTICE : probably -h and -v (help and version)  
+  //!TODO   : make support for  long option  
   if( ac == 2 )
   {
     char * short_flags = *(av+(ac-1)) ; 
