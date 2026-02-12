@@ -28,7 +28,9 @@ add_project_arguments(
   cc.get_supported_arguments( 
      '-Wformat',
      '-Wunused-parameter',
-     '-Warray-parameter'
+     '-Warray-parameter',
+     '-gdwarf-2',
+     '-g3', 
      ) ,
   # By default the bin representation with dot notation  is off
   '-DBIN_NOTATION_VERSION=0' ,

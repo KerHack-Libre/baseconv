@@ -83,7 +83,10 @@ void bcrepl_compute(const char * buffer)
 
     if(scan_limite ==0) break ;  
     scan_limite+=~(scan_limite^scan_limite)  ; 
-  }
+  } 
+  if(!token) 
+    bcv_scaner._sym_instruction='a'; 
+
 
    char  *out =  (void *)0 ; 
    switch(bcv_scaner._sym_instruction & 0xff ) 
@@ -94,20 +97,26 @@ void bcrepl_compute(const char * buffer)
          out = bc_bin(bcv_scaner._value); break ; 
       case 'o': 
          out = bc_oct(bcv_scaner._value); break ; 
-
+      case 'd':
+         out = bc_dec(bcv_scaner._value);break ; 
+      case 'c':  
+         out = bc_chr(bcv_scaner._value); break ; 
+         //bcv_print(value , DEC | HEX | OCT | BIN); break ;  
       case '?':  
       case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 
 
       case '!': 
       case 'v': fprintf(stdout , "%s\012", BCV_STARTUP_MESG) ; break ; 
-      default : 
+      default :
+                //BCV_WARN("|-> W: Unknow operation type 'h' or '?' to print the usage\n") 
+                 
          apply(fprintf(stderr ,"|-> W: Unknow operation type 'h' or '?' to print the usage\n")
              ,YELLOW) ;
          break ; 
    }
    if (!out)  
      return ;  
-    
+   //BCV_ERR() 
    apply(printf(" |-> %s\012", out) , RED) ; 
 } 
 
@@ -128,10 +137,13 @@ void __trimlower(char* bcv_cmd)
   int j=0; 
   char auto_format_cmd[0x14] ={0}; 
 
-  while(  (len&0xff) <  (len >> 8) )  
+  while(  (len&0xff) <  (len >> 8)  )  
   {
      if(isspace(*(bcv_cmd+(len&0xff)) & 0xff)) 
+     {
+       len=-~len ; 
        continue ; 
+     }
       
     *(auto_format_cmd+j++) = tolower(*(bcv_cmd+(len & 0xff))) ;  
     len=-~len ;  
