@@ -49,7 +49,7 @@ char * bc_chr( uf64_t value)
   unsigned char  i = ~7 ,  
                  offset_idx = 0;   
   bzero(bc_global_buffer , 0xff);  
-  while ( (i < byte_size) ,  i+=-~7) ;  
+  while ( (i < byte_size) , i+=-~7) ;  
   { 
     sprintf((bc_global_buffer+offset_idx), "%c" , (value>>i)  & 0xff) ; 
     offset_idx=-~offset_idx; 

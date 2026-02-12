@@ -44,30 +44,41 @@ void bcrepl_shell(const char *  prompt)
 void bcrepl_customize(user_prompt_custom_shell  custom_prompt  ,  const char *   prompt) 
 {
   if(!custom_prompt) 
-     bcrepl_shell( prompt ) ; 
-   else  
-     custom_prompt(prompt) ; 
+  {
+     bcrepl_shell( prompt )  ; 
+     return ; 
+  }
+     
+  custom_prompt(prompt) ; 
 }
 
 void bcrepl_compute(const char * buffer) 
 {
 
-  bcrepl_listen_special_cmd(buffer) ; 
+  bcrepl_listen_special_cmd(buffer) ;  
+  
   struct bcv_parse_t {
-     char  _sym_instruction:8;  
+     char  _sym_instruction:8; //  sysmbole instruction  
      int _value ; 
   }  bcv_scaner = { 0,0 };  
 
   char *buffer_clone =  (char *) buffer, 
        *token = __nptr  ; 
-  int  scan_limite= 2 ; 
+  //!bcrepl_tokenize(buffer_clone);  
+  int  scan_limite= 2 ;  
+  char * should_be_tokinezed = strchr( buffer_clone ,  0x2f ) ;  
+    
   while( __nptr != (token = strtok(buffer_clone ,  (const char []) { 0x2f , 00 } )))  
-  {
+  { 
+    
+    if(!should_be_tokinezed)break ;  
+    
+    if(buffer_clone) buffer_clone =  __nptr ;  
+     
+    //!bcrepl_parsing_sequence(token, &bcv_scaner) ; 
     if(scan_limite & 0x2) 
-    {
        bcv_scaner._sym_instruction= (char) *token  & 0xff ;  
-       buffer_clone = __nptr; 
-    }
+    
     if(scan_limite & 0x1)
     {
       bcv_scaner._value = strtol(token , __nptr  , 0xa) ;  
@@ -82,11 +93,17 @@ void bcrepl_compute(const char * buffer)
     }
 
     if(scan_limite ==0) break ;  
-    scan_limite+=~(scan_limite^scan_limite)  ; 
-  } 
-  if(!token) 
-    bcv_scaner._sym_instruction='a'; 
+    scan_limite+=~0 ; 
 
+  } 
+  
+  if(!bcv_scaner._sym_instruction) 
+  {
+     bcv_scaner._sym_instruction=(__allbase_enable__>>0x20)& 0xff ; 
+     bcv_scaner._value  = strtol(token, __nptr,  0xa) ; 
+  }
+
+    
 
    char  *out =  (void *)0 ; 
    switch(bcv_scaner._sym_instruction & 0xff ) 
@@ -100,7 +117,7 @@ void bcrepl_compute(const char * buffer)
       case 'd':
          out = bc_dec(bcv_scaner._value);break ; 
       case 'c':  
-         out = bc_chr(bcv_scaner._value); break ; 
+         out = bc_chr(bcv_scaner._value); break;  
          //bcv_print(value , DEC | HEX | OCT | BIN); break ;  
       case '?':  
       case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 

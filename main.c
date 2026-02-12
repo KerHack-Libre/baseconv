@@ -37,6 +37,7 @@ int main(int ac , char **av)
   if (!(ac &~(1)))  
   { 
     //! launch interactive shell 
+    (void) setlinebuf(stdin) ; 
     bcrepl_shell(__nptr);    
     goto _bcv_end;
   }
@@ -112,7 +113,7 @@ void bcv_print(uf64_t value)
       bcv_out(bc_oct(value) , OCT);
 
     if(__allbase_enable__ & BIN)
-      bcv_out(bc_bin(value) , BIN); 
+      bcv_out(bc_bin(value), BIN); 
 
     if(__allbase_enable__ & CHR)  
       bcv_out(bc_chr(value), CHR) ; 
