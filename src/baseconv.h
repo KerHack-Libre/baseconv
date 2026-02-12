@@ -7,6 +7,8 @@
 #define  __BASECONV 
 
 #include <stdio.h> 
+#include <stdint.h> 
+
 #if defined(__cpluscplus)
 # define  __BCEXPORT  extern "C" 
 #else 
@@ -17,8 +19,27 @@
   __BCEXPORT __type_return_function 
 
 #if !defined(__symbole_sep)   
-# define __symbole_sep  0x2e  
+# define __symbole_sep  0x2e
 #endif  
+
+
+#define  BIN (0x62) 
+#define  CHR (0x63<<8)
+#define  OCT (0x6f<<16) 
+#define  HEX (0x78<<24)
+#define  DEC (0x64<<32)
+
+#define  ALLBASE_ENABLE (BIN|CHR|OCT|HEX|DEC)  
+
+#define MASK_BIN 0xff 
+#define MASK_CHR (0xff00)>>8 
+#define MASK_OCT (0Xff0000)>> 16
+#define MASK_HEX (0xff000000) >> 24 
+#define MASK_DEC (0xff00000000)>> 32
+
+#define GET_BASE(TARGETED_BASE) \
+  ((ALLBASE_ENABLE  & (MASK_##TARGETED_BASE)) & 0xff)
+
 
 
 #define BYTE_UNIT sizeof(void *)  
@@ -31,7 +52,7 @@
   size_t i =strlen(__prefix); \
   while(0 != __it){\
     sprintf( (__out+i) ,__fmt, *(__expr+ __it-1));\
-    __it+=~(__it^__it),  i=-~i ;\
+    __it+=~0,  i=-~i ;\
   }\
   }
 
@@ -57,6 +78,9 @@
   -h, 'h' or '?' Print  this help\n\
   "
 
+__extension__ 
+typedef  unsigned long long int  uf64_t  ; 
+
 struct __bcb_t 
 {
   char _buff[0xff]; 
@@ -64,6 +88,8 @@ struct __bcb_t
 };
 
 extern char bc_global_buffer[0xff] ; 
+extern  uf64_t __allbase_enable__;    
+
 
 /* @fn detect_bit_section_starting_group(int) 
  * @brief  detect wich section group of binary  contain the first value  
@@ -74,7 +100,7 @@ extern char bc_global_buffer[0xff] ;
  * @param  int - the value 
  * @return int - the section(th) index that contain the value 
  */
-static __inline__ int detect_bit_section_starting_group(unsigned int value) 
+static __inline__ int detect_bit_section_starting_group(uf64_t  value) 
 {
   
   size_t vsize =  _SIZE(value) ; 
@@ -104,13 +130,10 @@ static __inline__ int detect_bit_section_starting_group(unsigned int value)
  */
 static __inline__ void print_symbol_seperation(void) 
 {
-   static int i = 0;
-   if (!(i^4)) 
-   {
-     printf("%c",  __symbole_sep) ;
-     i&=~i ; 
-   }
-   i=-~i; 
+   static unsigned char  i =~0;
+   if (!( (i=-~i)^4)) 
+     putchar(__symbole_sep) , i&=~i;  
+  
 }  
 
 
@@ -120,7 +143,7 @@ static __inline__ void print_symbol_seperation(void)
  * @param  int  - the base 
  * @param  struct __bcb_t *  - bcb data structure  hold the buffer in  the length 
  */ 
-static void __common_prototype_base_convertion(unsigned int value , int base ,  struct __bcb_t  *  bcb)  
+static void __common_prototype_base_convertion(uf64_t  value , int base ,  struct __bcb_t  *  bcb)  
 { 
    int  remain  = 0;  
    while (0!= value) 
@@ -141,13 +164,13 @@ static void __common_prototype_base_convertion(unsigned int value , int base ,  
  * @param   int  -  the value  
  * @param   int  -  would doyou like to show annotation dot "."
  */ 
-__BCX(void) bc_binv2(unsigned int __value, int __show_notation) ; 
+__BCX(void) bc_binv2(uf64_t  __value, int __show_notation) ; 
 
-__BCX(char *) bc_bin(unsigned int value) ;  
-__BCX(char *) bc_oct(unsigned int value) ; 
-__BCX(char *) bc_hex(unsigned int value) ; 
-__BCX(char *) bc_dec(unsigned int value) ; 
-
+__BCX(char *) bc_bin(uf64_t  value) ;  
+__BCX(char *) bc_oct(uf64_t  value) ; 
+__BCX(char *) bc_hex(uf64_t  value) ; 
+__BCX(char *) bc_dec(uf64_t  value) ; 
+__BCX(char *) bc_chr(uf64_t  value) ;
 
 
 #endif //!__BASECONV 

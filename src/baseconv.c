@@ -7,8 +7,9 @@
 #include "baseconv.h" 
 
 char bc_global_buffer[0xff]={0} ;  
+uf64_t __allbase_enable__ = (BIN|CHR|OCT|HEX|429496729600);   
 
-char *  bc_hex(unsigned int value) 
+char *  bc_hex( uf64_t value) 
 { 
   bzero(bc_global_buffer, 0xff) ; 
   struct __bcb_t  xrep ={0};   
@@ -16,7 +17,7 @@ char *  bc_hex(unsigned int value)
    SHOWHEX(xrep._buff , xrep._index , bc_global_buffer) ; 
    return bc_global_buffer ;  
 }
-char * bc_oct(unsigned  int value)
+char * bc_oct(uf64_t value)
 {
    bzero(bc_global_buffer, 0xff) ; 
    struct __bcb_t  orep = {0} ;  
@@ -25,7 +26,7 @@ char * bc_oct(unsigned  int value)
    return  bc_global_buffer; 
 }
 
-char * bc_bin(unsigned  value) 
+char * bc_bin(uf64_t value) 
 { 
    bzero(bc_global_buffer, 0xff) ; 
    struct __bcb_t  brep ={0};  
@@ -35,14 +36,28 @@ char * bc_bin(unsigned  value)
    return bc_global_buffer ; 
 }
 
-char * bc_dec(unsigned int value) 
+char * bc_dec( uf64_t value) 
 {
   bzero(bc_global_buffer , 0xff); 
   sprintf(bc_global_buffer,  "%i" ,  value); 
   return bc_global_buffer ; 
 }
 
-void  bc_binv2(unsigned int value , int show_notation) 
+char * bc_chr( uf64_t value)  
+{ 
+  size_t byte_size = _SIZE(value) >> 1 ;//! only take  32 bit   
+  unsigned char  i = ~7 ,  
+                 offset_idx = 0;   
+  bzero(bc_global_buffer , 0xff);  
+  while ( (i < byte_size) ,  i+=-~7) ;  
+  { 
+    sprintf((bc_global_buffer+offset_idx), "%c" , (value>>i)  & 0xff) ; 
+    offset_idx=-~offset_idx; 
+  }  
+  
+  return bc_global_buffer ;
+}
+void  bc_binv2( uf64_t value , int show_notation) 
 { 
   int section_bin=_SIZE(value)-(detect_bit_section_starting_group(value) *4);
   while (  0 < section_bin  ) 
