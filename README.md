@@ -133,16 +133,18 @@ read -p "Entrer un nombre : " n
 bcv $n
 ```
 
-#### Auteur
-Umar Ba
-jUmarB@protonmail.com
 
-🌐 github.com/Jukoo
+### Auteur & Mainteneur
+Umar Ba [jUmarB@protonmail.com](jUmarB@protonmail.com)
+_KerHack-Libre_ : “**comprendre**, **construire**, **transmettre**.”
+<img src="assets/logo/made_in_senegal.png" width="200"  height="" alt="made_in_senegal" title="made_in_senegal" style="margin-right:20px;border-radius:35px"  align="right"/></br>
 
 #### ⚖️ Licence
 
 Copyright (c) 2025
 KerHack-Libre — Logiciel libre et distribué sans AUCUNE GARANTIE.
+_L’ensemble des projets de KërHack-Libre sont distribués sous GPLv3,
+en accord avec les **4 libertés fondamentales du logiciel libre**_
 
 #### Contribuer
 
@@ -153,12 +155,5 @@ Si tu veux participer :
 * Soumets une pull request
 * Ou simplement partage bcv avec d’autres passionnés du shell !
 
-#####  À propos de KerHack-Libre
-
-KerHack-Libre est une initiative qui vise à promouvoir des outils systèmes libres, légers et éducatifs,
-inspirés de la philosophie Unix et du pragmatisme du libre.
-
-« Faire simple, efficace et libre. »
-
-<img src="assets/logo/khl1.png" width="100"  height="" alt="khlogo"  align="right"/>
+<img src="assets/logo/khl1.png" width="100"  height="" alt="khlogo"  align="left"/>
 
