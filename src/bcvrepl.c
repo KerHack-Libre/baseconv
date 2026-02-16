@@ -78,12 +78,18 @@ void bcrepl_compute(const char * buffer)
   if(0 < strlen(should_be_tokinezed)) 
     vtok = bcrepl_process(buffer_clone , *(should_be_tokinezed) & 0xff);  
   else  
-  {
+  { 
     value =  strtol(buffer_clone , 00 ,  10) ; 
-    if(value) 
-      bcv_print(value);  
-    else 
-      bcv_guess_base(buffer_clone) ; 
+    value ?  bcv_print(value) :  bcv_guess_base(buffer_clone) ; 
+    
+    switch(*buffer_clone & 0xff)
+    {
+      case '?':  
+      case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 
+      case '!': 
+      case 'v': fprintf(stdout , "%s\012", BCV_STARTUP_MESG) ; break ; 
+    }
+     
 
     return ;  
   }
@@ -98,7 +104,7 @@ void bcrepl_compute(const char * buffer)
   }  
 
 
-
+  //bcrepl_inline_out_convertion(toksymb) ; 
    char  *out =  (void *)0 ; 
    switch( toksymb ) 
    {
@@ -112,11 +118,6 @@ void bcrepl_compute(const char * buffer)
          out = bc_dec(value); break ; 
       case 'c':  
          out = bc_chr(value); break ;  
-      case '?':  
-      case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 
-
-      case '!': 
-      case 'v': fprintf(stdout , "%s\012", BCV_STARTUP_MESG) ; break ; 
       default :
                 //BCV_WARN("|-> W: Unknow operation type 'h' or '?' to print the usage\n") 
                  
