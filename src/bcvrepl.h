@@ -11,6 +11,7 @@
 #endif  
 
 #include "bcv_conf.h"
+#include "baseconv.h" 
 
 #if defined(__linux__) 
 #include <term.h> 
@@ -54,10 +55,14 @@ static inline  __attribute__((constructor)) void init_tty(void)
   BCV_VERSION_STR\
   BCV_DISCLAIMER
 
-
 #define  __nptr  (void *) 0   
-#define  _Nullable   
-#define  _NonNullable  [static 0x1]  
+
+#define  BCVRPL_SEPS {\
+  0x2f,0x20,\
+  0x28,0x23,\
+  0x24,0x25,\
+  0x0}
+
 #define  bcrepl_symbole_prompt  0x3e 
 #define  bcrepl_buffer_limit    0x50
 #define  __bcrepl_prompt_format  "[%i] %s %c "
@@ -71,6 +76,8 @@ extern char * program_invocation_short_name ;
 # define  pname  "bcv" 
 #endif 
 
+
+
 typedef  typeof(void(const char *  __restrict__)) * user_prompt_custom_shell ; 
 
 /* @fn bcrepl_shell(const char * _Nullable) 
@@ -78,7 +85,7 @@ typedef  typeof(void(const char *  __restrict__)) * user_prompt_custom_shell ;
  * @param  const char  * - if Null  the default shell prompt is used 
  * */
 bcvrepl_export void 
-bcrepl_shell(const char * _Nullable  __prompt)  ; 
+bcrepl_shell(const char * __prompt)  ; 
 
 
 bcvrepl_export void  
@@ -89,22 +96,24 @@ bcrepl_customize(user_prompt_custom_shell,  const char  *   __restrict__ __promp
  * @param  const char * _NonNullable - buffer  
  */
 bcvrepl_export void 
-bcrepl_compute(const char __buffer _NonNullable)  ; 
+bcrepl_compute(const char *__buffer)  ; 
 
 /* @fn bcrepl_listen_cmd(const char * _NonNullable)
  * @brief listen basic command   instruction like exit quit  
  * @param  const char *  _NonNullable  - buffer 
   */ 
 bcvrepl_export void __attribute__((weak))   
-bcrepl_listen_special_cmd(const char __buffer _NonNullable) ; 
+bcrepl_listen_special_cmd(const char *__buffer) ; 
 
 /* @fn __trimlower(char * _NonNullable) 
  * @brief  trim empty space left and right  and make it lower case 
  * @param  char  * command 
  */ 
 bcvrepl_export void 
-__trimlower(char  __cmd _NonNullable); 
+__trimlower(char  *__cmd); 
 
+bcvrepl_export char * bcrepl_token_search(const char * __restrict__) ; 
 
+bcvrepl_export uf64_t bcrepl_process(const char  * buffer , char founded_token) ; 
 
 #endif //!bcv_repl_h 

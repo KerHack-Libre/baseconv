@@ -56,6 +56,7 @@
   }\
   }
 
+
 #define SHOWHEX(__expr, __it ,__out) \
   SHOWBASE_EXPR(__expr ,__it, "0x","%c", __out) 
 
@@ -64,6 +65,13 @@
   
 #define SHOWBIN(__expr , __it,__out)\
   SHOWBASE_EXPR(__expr ,__it, "0b","%i",  __out) 
+
+
+#define  UMAX_LONG   ~((0ULL)>>1) 
+#define  bcv_out(__expression ,__annotation) \
+      fprintf(stdout , "%s: %s\012", #__annotation ,  __expression)   
+
+
 
 #define  USAGE "\
   Usage : bcv [OPTION] ... <NUMBER>\n\
@@ -171,6 +179,9 @@ __BCX(char *) bc_oct(uf64_t  value) ;
 __BCX(char *) bc_hex(uf64_t  value) ; 
 __BCX(char *) bc_dec(uf64_t  value) ; 
 __BCX(char *) bc_chr(uf64_t  value) ;
+__BCX(void)   bcv_print(uf64_t value) ;  
 
+
+__BCX(void) bcv_guess_base(const char * rawinput) ; 
 
 #endif //!__BASECONV 
