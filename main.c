@@ -16,16 +16,8 @@
 #include "baseconv.h" 
 #include "bcvrepl.h"
 
-#define  UMAX_LONG   ~((0ULL)>>1) 
-
-#define  bcv_out(__expression ,__annotation) \
-  fprintf(stdout , "%s: %s\012", #__annotation ,  __expression)   
-
-
-
 void bcv_usage(unsigned char const) ;            /* [[noreturn]] */
 void bcv_guess_base(const char * __restrict__) ; /* [[noreturn]] */
-void bcv_print(uf64_t value) ;
 
 int main(int ac , char **av) 
 { 
@@ -53,10 +45,13 @@ int main(int ac , char **av)
       bcv_usage(*(short_flags+1) & 0xff); 
   
     if(!(0x30 ^ (*(short_flags) & 0xff))) 
+    {
       bcv_guess_base(short_flags) ;  
+      return EXIT_SUCCESS ; 
+    }
       
     uf64_t  value =  strtol(short_flags , (void  *)00 , 10) ;  
-   if (!value)
+    if (!value)
       value = (unsigned char)(*(short_flags)&0xff);
 
    bcv_print(value);  
@@ -133,50 +128,4 @@ void bcv_usage(unsigned char const char_flag)
 
   exit(EXIT_SUCCESS) ; 
 } 
-
-
-void bcv_guess_base(const char * restrict num) 
-{ 
-
-  uf64_t  options = __allbase_enable__, 
-                resolve_option=__allbase_enable__,  
-                value   = 0  ; 
-  char indicator = tolower(*(num+1)  & 0xff ) ; 
-  
-  switch(indicator) 
-  {
-     case 'x' :  
-       options&=~HEX; 
-       value = strtol((num+2), (void *)0 , 0x10) ;
-       break; 
-     case 'o' :
-       options&=~OCT ;  
-       value = strtol((num+2), (void *)0 , 010);
-       break; 
-     case 'b' :
-       options&=~BIN ;
-       value = strtol((num+2), (void *)0 , 2) ;
-       break;  
-     case 'c':
-       options &=~CHR; 
-       value = strtol((num+2), (void*)0 , 10) ; 
-       break; 
-     default : 
-       //! it's highly a decimal 
-       options&=~429496729600 ; 
-       value = strtol(num, (void*)0 , 10) ; 
-       goto _end; 
-  }
- 
-  
-  uf64_t exclude= (__allbase_enable__ ^  options) ;  
-  __allbase_enable__^=exclude; 
-  bcv_print(value)  ;  
-  
-  __allbase_enable__ = resolve_option ; 
-
-_end: 
-  exit(EXIT_SUCCESS) ; 
-}
-
 

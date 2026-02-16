@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h> 
+#include <ctype.h> 
 #include "baseconv.h" 
 
 char bc_global_buffer[0xff]={0} ;  
@@ -69,6 +70,72 @@ void  bc_binv2( uf64_t value , int show_notation)
      section_bin+=~(section_bin^section_bin) ;  
   }
 
-  puts("") ; 
+  putchar(012);  
 }
+
+
+void bcv_print(uf64_t value)
+{
+    if((__allbase_enable__ >> 32)&  0x64)
+      bcv_out(bc_dec(value), DEC);
+
+    if(__allbase_enable__ &  HEX)
+      bcv_out(bc_hex(value), HEX);
+
+    if(__allbase_enable__ & OCT)
+      bcv_out(bc_oct(value) , OCT);
+
+    if(__allbase_enable__ & BIN)
+      bcv_out(bc_bin(value), BIN); 
+
+    if(__allbase_enable__ & CHR)  
+      bcv_out(bc_chr(value), CHR) ; 
+
+} 
+
+
+void bcv_guess_base(const char * restrict num) 
+{ 
+
+  uf64_t  options = __allbase_enable__, 
+                resolve_option=__allbase_enable__,  
+                value   = 0  ; 
+  char indicator = tolower(*(num+1)  & 0xff ) ; 
+  
+  switch(indicator) 
+  {
+     case 'x' :  
+       options&=~HEX; 
+       value = strtol((num+2), (void *)0 , 0x10) ;
+       break; 
+     case 'o' :
+       options&=~OCT ;  
+       value = strtol((num+2), (void *)0 , 010);
+       break; 
+     case 'b' :
+       options&=~BIN ;
+       value = strtol((num+2), (void *)0 , 2) ;
+       break;  
+     case 'c':
+       options &=~CHR; 
+       value = strtol((num+2), (void*)0 , 10) ; 
+       break; 
+     default : 
+       //! decimal 
+       options&=~429496729600 ; 
+       value = strtol(num, (void*)0 , 10) ; 
+       goto _end; 
+  }
+ 
+  
+  uf64_t exclude= (__allbase_enable__ ^  options) ;  
+  __allbase_enable__^=exclude; 
+  bcv_print(value)  ;  
+  
+  __allbase_enable__ = resolve_option ; 
+
+_end: 
+  return ;  
+}
+
 

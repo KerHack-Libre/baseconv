@@ -7,7 +7,7 @@
 #include <string.h> 
 #include <stdlib.h> 
 #include <ctype.h>
-#include <errno.h> 
+#include <errno.h>
 
 #include "bcvrepl.h" 
 #include "baseconv.h"
@@ -50,75 +50,68 @@ void bcrepl_customize(user_prompt_custom_shell  custom_prompt  ,  const char *  
   }
      
   custom_prompt(prompt) ; 
+} 
+
+char * bcrepl_token_search(const char *  bcrpl_inline_buffer) 
+{
+  const char token_list[]= BCVRPL_SEPS ; 
+  char *token_found = 00 ; 
+  unsigned int i = 0 ; 
+  
+  while(!(token_found = strchr(bcrpl_inline_buffer , *(token_list+i)))) i=-~i ;  
+  
+  return token_found ; 
 }
+
 
 void bcrepl_compute(const char * buffer) 
 {
 
+  char *should_be_tokinezed  = 00, 
+       *buffer_clone = (char*) buffer , 
+       toksymb = 0 ; 
+
+  uf64_t vtok =0 , value =0 ; 
+
   bcrepl_listen_special_cmd(buffer) ;  
-  
-  struct bcv_parse_t {
-     char  _sym_instruction:8; //  sysmbole instruction  
-     int _value ; 
-  }  bcv_scaner = { 0,0 };  
-
-  char *buffer_clone =  (char *) buffer, 
-       *token = __nptr  ; 
-  //!bcrepl_tokenize(buffer_clone);  
-  int  scan_limite= 2 ;  
-  char * should_be_tokinezed = strchr( buffer_clone ,  0x2f ) ;  
-    
-  while( __nptr != (token = strtok(buffer_clone ,  (const char []) { 0x2f , 00 } )))  
-  { 
-    
-    if(!should_be_tokinezed)break ;  
-    
-    if(buffer_clone) buffer_clone =  __nptr ;  
-     
-    //!bcrepl_parsing_sequence(token, &bcv_scaner) ; 
-    if(scan_limite & 0x2) 
-       bcv_scaner._sym_instruction= (char) *token  & 0xff ;  
-    
-    if(scan_limite & 0x1)
-    {
-      bcv_scaner._value = strtol(token , __nptr  , 0xa) ;  
-      if(!bcv_scaner._value) 
-        bcv_scaner._value = (unsigned char ) (*(token) & 0xff) ;   
-
-      if(errno!= 0)
-      {
-         fprintf(stderr , "%s \012",  strerror(*__errno_location())) ; 
-         bcv_scaner._value =  0; 
-      }
-    }
-
-    if(scan_limite ==0) break ;  
-    scan_limite+=~0 ; 
-
-  } 
-  
-  if(!bcv_scaner._sym_instruction) 
+  should_be_tokinezed = bcrepl_token_search(buffer_clone) ;  
+  if(0 < strlen(should_be_tokinezed)) 
+    vtok = bcrepl_process(buffer_clone , *(should_be_tokinezed) & 0xff);  
+  else  
   {
-     bcv_scaner._sym_instruction=(__allbase_enable__>>0x20)& 0xff ; 
-     bcv_scaner._value  = strtol(token, __nptr,  0xa) ; 
+    value =  strtol(buffer_clone , 00 ,  10) ; 
+    if(value) 
+      bcv_print(value);  
+    else 
+      bcv_guess_base(buffer_clone) ; 
+
+    return ;  
   }
 
-    
+  toksymb = (vtok >> 0x20) & 0xff ;
+  value = (vtok & 0xffffffff);  
+  
+  if(!toksymb) 
+  {
+    bcv_print(value) ; 
+    return ; 
+  }  
+
+
 
    char  *out =  (void *)0 ; 
-   switch(bcv_scaner._sym_instruction & 0xff ) 
+   switch( toksymb ) 
    {
       case 'x' : 
-         out = bc_hex(bcv_scaner._value); break ; 
+         out = bc_hex(value); break ; 
       case 'b': 
-         out = bc_bin(bcv_scaner._value); break ; 
+         out = bc_bin(value); break ; 
       case 'o': 
-         out = bc_oct(bcv_scaner._value); break ; 
+         out = bc_oct(value); break ; 
       case 'd':
-         out = bc_dec(bcv_scaner._value);break ; 
+         out = bc_dec(value); break ; 
       case 'c':  
-         out = bc_chr(bcv_scaner._value); break;  
-         //bcv_print(value , DEC | HEX | OCT | BIN); break ;  
+         out = bc_chr(value); break ;  
       case '?':  
       case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 
 
@@ -169,4 +162,29 @@ void __trimlower(char* bcv_cmd)
 
   bzero(bcv_cmd, (len >>8))  ; 
   memcpy(bcv_cmd , auto_format_cmd ,  j) ; 
+}
+
+
+uf64_t bcrepl_process(const char * buffer , const char ftokn) 
+{ 
+  char *token = 00,  *buffer_clone = (char *) buffer , 
+       scan_limite=3; 
+  uf64_t vtok=0; 
+  
+  
+  while( --scan_limite && __nptr != (token = strtok(buffer_clone,  (const char []) { ftokn , 00 } )))
+  {
+    if(buffer_clone) buffer_clone=00;  
+
+    if(2 == scan_limite)  
+    {
+      char *s = 0 ; 
+      asprintf(&s , "%i" ,  (*token & 0xff)) ; 
+      vtok= (uf64_t) strtol(s, 00 , 0xa) << 0x20;  
+      free(s) , s=0 ;  
+    }
+    else 
+      vtok|=(uf64_t)(strtol(token , __nptr , 0xa))  ; 
+  }
+  return vtok ;
 }
