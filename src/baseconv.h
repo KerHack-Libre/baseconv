@@ -184,4 +184,5 @@ __BCX(void)   bcv_print(uf64_t value) ;
 
 __BCX(void) bcv_guess_base(const char * rawinput) ; 
 
+static int is_printable(const char *code_ascii);  
 #endif //!__BASECONV 

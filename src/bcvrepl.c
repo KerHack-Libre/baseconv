@@ -22,8 +22,8 @@ void bcrepl_shell(const char *  prompt)
    fprintf(stdout , "%s" , BCV_STARTUP_MESG) ; 
    while (proceed, ++line) 
    { 
-     //!repl_promt 
 
+     //!BCV_SUCCESS()
      apply( printf(bpf, line,  prmpt , bcrepl_symbole_prompt) , GREEN) ;  
 
      if(!(fgets(prompt_buffer ,  bcrepl_buffer_limit, stdin)))
@@ -34,9 +34,8 @@ void bcrepl_shell(const char *  prompt)
      
      if (0==strlen(prompt_buffer)) continue ; 
      bcrepl_compute(prompt_buffer) ; 
-     /* NOTICE :always clean the repl buffer */
+     
      bzero(prompt_buffer , bcrepl_buffer_limit) ; 
-
      fflush(stdin) ; 
    }
 } 
@@ -81,16 +80,8 @@ void bcrepl_compute(const char * buffer)
   { 
     value =  strtol(buffer_clone , 00 ,  10) ; 
     value ?  bcv_print(value) :  bcv_guess_base(buffer_clone) ; 
-    
-    switch(*buffer_clone & 0xff)
-    {
-      case '?':  
-      case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 
-      case '!': 
-      case 'v': fprintf(stdout , "%s\012", BCV_STARTUP_MESG) ; break ; 
-    }
+    bcrepl_show_helper(buffer_clone) ;  
      
-
     return ;  
   }
 
@@ -127,6 +118,7 @@ void bcrepl_compute(const char * buffer)
    }
    if (!out)  
      return ;  
+
    //BCV_ERR() 
    apply(printf(" |-> %s\012", out) , RED) ; 
 } 
@@ -188,4 +180,16 @@ uf64_t bcrepl_process(const char * buffer , const char ftokn)
       vtok|=(uf64_t)(strtol(token , __nptr , 0xa))  ; 
   }
   return vtok ;
+}
+
+static void bcrepl_show_helper(const char  repl_buffer[static 1]) 
+{
+  switch( *repl_buffer  & 0xff)
+  {
+    case '?':  
+    case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 
+    case '!': 
+    case 'v': fprintf(stdout , "%s\012", BCV_STARTUP_MESG) ; break ;   
+  }
+
 }

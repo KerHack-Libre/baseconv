@@ -17,7 +17,6 @@
 #include "bcvrepl.h"
 
 void bcv_usage(unsigned char const) ;            /* [[noreturn]] */
-void bcv_guess_base(const char * __restrict__) ; /* [[noreturn]] */
 
 int main(int ac , char **av) 
 { 
@@ -94,26 +93,6 @@ _bcv_end:
 
   return EXIT_SUCCESS ; 
 } 
-
-
-void bcv_print(uf64_t value)
-{
-    if((__allbase_enable__ >> 32)&  0x64)
-      bcv_out(bc_dec(value), DEC);
-
-    if(__allbase_enable__ &  HEX)
-      bcv_out(bc_hex(value), HEX);
-
-    if(__allbase_enable__ & OCT)
-      bcv_out(bc_oct(value) , OCT);
-
-    if(__allbase_enable__ & BIN)
-      bcv_out(bc_bin(value), BIN); 
-
-    if(__allbase_enable__ & CHR)  
-      bcv_out(bc_chr(value), CHR) ; 
-
-}
 
 void bcv_usage(unsigned char const char_flag) 
 {

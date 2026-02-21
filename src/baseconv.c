@@ -89,7 +89,12 @@ void bcv_print(uf64_t value)
       bcv_out(bc_bin(value), BIN); 
 
     if(__allbase_enable__ & CHR)  
-      bcv_out(bc_chr(value), CHR) ; 
+    {
+      const char *s = bc_chr(value) ;
+      if(is_printable(s)) 
+        bcv_out(s ,  CHR) ; 
+    }
+    
 
 } 
 
@@ -138,4 +143,14 @@ _end:
   return ;  
 }
 
+//!NOTE : for all the different variations of the ASCII table,
+//      : Only  printable characters, represent letters, digits, punctuation marks, and a few miscellaneous symbols.
+//      : You will find almost every character on your keyboard.
+//
+//!WARNING : The extended ASCII code are not yet supported 
+static int is_printable(const char  * ascii_code) 
+{ 
+  unsigned char code = (*ascii_code& 0xff) ; 
+  return  (0x20 < code) ? ( code <  0x7f ) : 0 ;  
+}
 
