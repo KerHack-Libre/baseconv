@@ -116,4 +116,6 @@ bcvrepl_export char * bcrepl_token_search(const char * __restrict__) ;
 
 bcvrepl_export uf64_t bcrepl_process(const char  * buffer , char founded_token) ; 
 
+
+static void bcrepl_show_helper(const char  buffer [ static 1 ]) ; 
 #endif //!bcv_repl_h 
