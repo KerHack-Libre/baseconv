@@ -143,14 +143,3 @@ _end:
   return ;  
 }
 
-//!NOTE : for all the different variations of the ASCII table,
-//      : Only  printable characters, represent letters, digits, punctuation marks, and a few miscellaneous symbols.
-//      : You will find almost every character on your keyboard.
-//
-//!WARNING : The extended ASCII code are not yet supported 
-static int is_printable(const char  * ascii_code) 
-{ 
-  unsigned char code = (*ascii_code& 0xff) ; 
-  return  (0x20 < code) ? ( code <  0x7f ) : 0 ;  
-}
-
