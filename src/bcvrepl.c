@@ -131,12 +131,15 @@ void bcrepl_compute(const char * buffer)
 
 void bcrepl_listen_special_cmd(const char * buffer) 
 {
-   char * cmd =  (char *) buffer;  
+   char * cmd =  strdup(buffer) ; 
    __trimlower(cmd) ; 
     
    if(0 == strcmp(cmd, "quit") || \
       0 == strcmp(cmd, "exit")) 
+   {
+     free(cmd) ; 
      exit(0) ; 
+   }
 
 }
 
@@ -170,10 +173,6 @@ uf64_t bcrepl_process(const char * buffer , const char ftokn)
        scan_limite=3; 
   uf64_t vtok=0; 
   
-  //#>d/0x23 
-  // d base cible 
-  // 0x23 : 
-  //  1> detection de la base 
   while( --scan_limite && __nptr != (token = strtok(buffer_clone,  (const char []) { ftokn , 00 } )))
   {
     if(buffer_clone) buffer_clone=00;  
