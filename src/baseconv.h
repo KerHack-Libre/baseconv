@@ -95,6 +95,7 @@ struct __bcb_t
   int  _index ; 
 };
 
+//!TODO : Use memory stream  instead
 extern char bc_global_buffer[0xff] ; 
 extern  uf64_t __allbase_enable__;    
 
@@ -144,7 +145,6 @@ static __inline__ void print_symbol_seperation(void)
   
 }  
 
-
 /* @fn __common_prototype_base_convertion(int  , int  , struct __bcb_t*) 
  * @brief  common logic  used by the bc_* function to convert  
  * @param  int  - the value 
@@ -164,6 +164,16 @@ static void __common_prototype_base_convertion(uf64_t  value , int base ,  struc
    } 
 }
 
+///////!NOTE : for all the different variations of the ASCII table,
+//             Only  printable characters, represent letters, digits, punctuation marks, and a few miscellaneous symbols.
+//             You will find almost every character on your keyboard.
+/////!WARNING : The extended ASCII code are not yet supported 
+
+static __inline__ unsigned char  is_printable(const char *character) 
+{
+  unsigned char ascii_code =  (*character & 0xff) ; 
+  return (0x20 < ascii_code)? (0x7ff >  ascii_code)  : 0; 
+}
 /* the exposed function */  
 
 
@@ -180,9 +190,7 @@ __BCX(char *) bc_hex(uf64_t  value) ;
 __BCX(char *) bc_dec(uf64_t  value) ; 
 __BCX(char *) bc_chr(uf64_t  value) ;
 __BCX(void)   bcv_print(uf64_t value) ;  
-
-
 __BCX(void) bcv_guess_base(const char * rawinput) ; 
 
-static int is_printable(const char *code_ascii);  
+
 #endif //!__BASECONV 
