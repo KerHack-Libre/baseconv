@@ -88,7 +88,8 @@
   "
 
 __extension__ 
-typedef  unsigned long long int  uf64_t  ; 
+typedef  unsigned long long int  uf64_t; 
+//typeof (void (uf64_t)) * bcv_printer_t; 
 
 struct __bcb_t 
 {
@@ -192,7 +193,7 @@ __BCX(char *) bc_hex(uf64_t  value) ;
 __BCX(char *) bc_dec(uf64_t  value) ; 
 __BCX(char *) bc_chr(uf64_t  value) ;
 __BCX(void)   bcv_print(uf64_t value) ;  
-__BCX(void) bcv_guess_base(const char * rawinput) ; 
+__BCX(uf64_t) __bcv_guess_base(const char * rawinput,  void (*)(uf64_t)) ;
+__BCX(uf64_t) bcv_guess_base(const char  * rawinput);  
 __BCX(int)  bcv_launch_interactive_repl_on(int no_args) ; 
-
 #endif //!__BASECONV 
