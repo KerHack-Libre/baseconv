@@ -10,8 +10,8 @@
 # define bcvrepl_export  
 #endif  
 
-#include "bcv_conf.h"
-#include "baseconv.h" 
+#include "bcv_conf.h" 
+#include "baseconv.h"
 
 #if defined(__linux__) 
 #include <term.h> 
@@ -37,6 +37,8 @@ static inline  __attribute__((constructor)) void init_tty(void)
 #define  GREEN   __SETAF(COLOR_GREEN) 
 #define  RED     __SETAF(COLOR_RED) 
 #define  YELLOW  __SETAF(COLOR_YELLOW) 
+#define  INFO    __SETAF(COLOR_CYAN) 
+
 #define  __reset tputs(reset,  1, putchar ) 
 
 #define  apply(__statement , __color_attr)  \
@@ -77,15 +79,14 @@ extern char * program_invocation_short_name ;
 #endif 
 
 
-
 typedef  typeof(void(const char *  __restrict__)) * user_prompt_custom_shell ; 
 
 /* @fn bcrepl_shell(const char * _Nullable) 
  * @brief  define the shell prompt 
  * @param  const char  * - if Null  the default shell prompt is used 
  * */
-bcvrepl_export void 
-bcrepl_shell(const char * __prompt)  ; 
+bcvrepl_export void __attribute__((noreturn))   
+bcrepl_shell(const char * __prompt) ;   
 
 
 bcvrepl_export void  
@@ -112,10 +113,9 @@ bcrepl_listen_special_cmd(const char *__buffer) ;
 bcvrepl_export void 
 __trimlower(char  *__cmd); 
 
+static uf64_t bcrepl_analyse_braw(const char *  __restrict__ raw_input_buffer) ; 
+
 bcvrepl_export char * bcrepl_token_search(const char * __restrict__) ; 
-
 bcvrepl_export uf64_t bcrepl_process(const char  * buffer , char founded_token) ; 
-
-
 static void bcrepl_show_helper(const char  buffer [ static 1 ]) ; 
 #endif //!bcv_repl_h 

@@ -38,6 +38,7 @@ void bcrepl_shell(const char *  prompt)
      bzero(prompt_buffer , bcrepl_buffer_limit) ; 
      fflush(stdin) ; 
    }
+   exit(EXIT_SUCCESS) ; 
 } 
 
 void bcrepl_customize(user_prompt_custom_shell  custom_prompt  ,  const char *   prompt) 
@@ -63,6 +64,15 @@ char * bcrepl_token_search(const char *  bcrpl_inline_buffer)
 }
 
 
+static uf64_t   bcrepl_analyse_braw(const char *  raw_buffer) 
+{
+  uf64_t value = strtol(raw_buffer ,  00 , 10); 
+  if (!value  &&  is_printable(raw_buffer))
+    value = *raw_buffer & 0xff ;  
+
+  return value ; 
+}
+  
 void bcrepl_compute(const char * buffer) 
 {
 
@@ -78,7 +88,7 @@ void bcrepl_compute(const char * buffer)
     vtok = bcrepl_process(buffer_clone , *(should_be_tokinezed) & 0xff);  
   else  
   { 
-    value =  strtol(buffer_clone , 00 ,  10) ; 
+    value = bcrepl_analyse_braw(buffer_clone);  
     value ?  bcv_print(value) :  bcv_guess_base(buffer_clone) ; 
     bcrepl_show_helper(buffer_clone) ;  
      
