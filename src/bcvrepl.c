@@ -9,8 +9,8 @@
 #include <ctype.h>
 #include <errno.h>
 
-#include "bcvrepl.h" 
 #include "baseconv.h"
+#include "bcvrepl.h" 
 
 
 void bcrepl_shell(const char *  prompt)
@@ -78,7 +78,7 @@ void bcrepl_compute(const char * buffer)
 
   char *should_be_tokinezed  = 00, 
        *buffer_clone = (char*) buffer , 
-       toksymb = 0 ; 
+       toksymb = 0, *out =  (void *)0 ; 
 
   uf64_t vtok =0 , value =0 ; 
 
@@ -91,22 +91,18 @@ void bcrepl_compute(const char * buffer)
     value = bcrepl_analyse_braw(buffer_clone);  
     value ?  bcv_print(value) :  bcv_guess_base(buffer_clone) ; 
     bcrepl_show_helper(buffer_clone) ;  
-     
     return ;  
   }
 
   toksymb = (vtok >> 0x20) & 0xff ;
   value = (vtok & 0xffffffff);  
-  
+ 
   if(!toksymb) 
   {
     bcv_print(value) ; 
     return ; 
   }  
 
-
-  //bcrepl_inline_out_convertion(toksymb) ; 
-   char  *out =  (void *)0 ; 
    switch( toksymb ) 
    {
       case 'x' : 
@@ -174,7 +170,10 @@ uf64_t bcrepl_process(const char * buffer , const char ftokn)
        scan_limite=3; 
   uf64_t vtok=0; 
   
-  
+  //#>d/0x23 
+  // d base cible 
+  // 0x23 : 
+  //  1> detection de la base 
   while( --scan_limite && __nptr != (token = strtok(buffer_clone,  (const char []) { ftokn , 00 } )))
   {
     if(buffer_clone) buffer_clone=00;  
@@ -187,7 +186,7 @@ uf64_t bcrepl_process(const char * buffer , const char ftokn)
       free(s) , s=0 ;  
     }
     else 
-      vtok|=(uf64_t)(strtol(token , __nptr , 0xa))  ; 
+      vtok|= __bcv_guess_base(token ,  __nptr); 
   }
   return vtok ;
 }

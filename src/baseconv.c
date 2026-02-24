@@ -101,7 +101,7 @@ void bcv_print(uf64_t value)
 } 
 
 
-void bcv_guess_base(const char * restrict num) 
+uf64_t __bcv_guess_base(const char * restrict num , void (*base_printer)(uf64_t))  
 { 
 
   uf64_t  options = __allbase_enable__, 
@@ -138,11 +138,14 @@ void bcv_guess_base(const char * restrict num)
 
   excluded= (__allbase_enable__ ^  options) ;  
   __allbase_enable__^=excluded; 
-  bcv_print(value)  ;   
+
+  if(base_printer)
+    base_printer(value)  ;   
+
   __allbase_enable__ = restore_option ; 
 
 _end: 
-  return ;  
+  return value ;   
 }
 
 int bcv_launch_interactive_repl_on(int check_shell_argument)  
@@ -151,4 +154,9 @@ int bcv_launch_interactive_repl_on(int check_shell_argument)
     bcrepl_shell(__nptr /*default prompt */) ; 
   
   return 0; 
+}
+
+uf64_t bcv_guess_base(const char * restrict num) 
+{
+   return  __bcv_guess_base(num ,  bcv_print) ;  
 }
