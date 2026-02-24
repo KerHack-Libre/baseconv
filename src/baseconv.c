@@ -6,6 +6,8 @@
 #include <string.h> 
 #include <ctype.h> 
 #include "baseconv.h" 
+#include "bcvrepl.h" 
+
 
 char bc_global_buffer[0xff]={0} ;  
 uf64_t __allbase_enable__ = (BIN|CHR|OCT|HEX|429496729600);   
@@ -103,7 +105,8 @@ void bcv_guess_base(const char * restrict num)
 { 
 
   uf64_t  options = __allbase_enable__, 
-                resolve_option=__allbase_enable__,  
+                restore_option=__allbase_enable__,
+                excluded =0 ,  
                 value   = 0  ; 
   char indicator = tolower(*(num+1)  & 0xff ) ; 
   
@@ -132,14 +135,20 @@ void bcv_guess_base(const char * restrict num)
        goto _end; 
   }
  
-  
-  uf64_t exclude= (__allbase_enable__ ^  options) ;  
-  __allbase_enable__^=exclude; 
-  bcv_print(value)  ;  
-  
-  __allbase_enable__ = resolve_option ; 
+
+  excluded= (__allbase_enable__ ^  options) ;  
+  __allbase_enable__^=excluded; 
+  bcv_print(value)  ;   
+  __allbase_enable__ = restore_option ; 
 
 _end: 
   return ;  
 }
 
+int bcv_launch_interactive_repl_on(int check_shell_argument)  
+{
+  if(check_shell_argument)   
+    bcrepl_shell(__nptr /*default prompt */) ; 
+  
+  return 0; 
+}

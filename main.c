@@ -14,7 +14,8 @@
 #include <stdint.h> 
 
 #include "baseconv.h" 
-#include "bcvrepl.h"
+
+#define NO_ARGS  !(ac &~(1)) 
 
 void bcv_usage(unsigned char const) ;            /* [[noreturn]] */
 
@@ -23,16 +24,11 @@ int main(int ac , char **av)
   (void) setvbuf(stdout , (void *)0 , _IONBF ,0) ; 
    
   //!NOTICE : when no argument was provided  the repl is automaticaly launched 
-  //if(bcv_launch_iteractive_repl_on(!(ac ~ &(1))))  
-    //goto _bcv_end ; 
-  if (!(ac &~(1)))  
-  { 
-    //! launch interactive shell 
-    (void) setlinebuf(stdin) ; 
-    bcrepl_shell(__nptr);    
-    goto _bcv_end;
-  }
-  
+ 
+  if(bcv_launch_interactive_repl_on(NO_ARGS))  
+    goto _bcv_end ;
+
+ 
   //!NOTICE : long  options are note handled ... 
   //!NOTICE : probably -h and -v (help and version)  
   //!TODO   : make support for  long option  

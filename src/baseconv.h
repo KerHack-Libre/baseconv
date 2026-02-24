@@ -56,6 +56,7 @@
   }\
   }
 
+#define bcvtol(input , base) strtol(input , 00 ,  base) 
 
 #define SHOWHEX(__expr, __it ,__out) \
   SHOWBASE_EXPR(__expr ,__it, "0x","%c", __out) 
@@ -95,6 +96,7 @@ struct __bcb_t
   int  _index ; 
 };
 
+#include "bcvrepl.h" 
 //!TODO : Use memory stream  instead
 extern char bc_global_buffer[0xff] ; 
 extern  uf64_t __allbase_enable__;    
@@ -191,6 +193,6 @@ __BCX(char *) bc_dec(uf64_t  value) ;
 __BCX(char *) bc_chr(uf64_t  value) ;
 __BCX(void)   bcv_print(uf64_t value) ;  
 __BCX(void) bcv_guess_base(const char * rawinput) ; 
-
+__BCX(int)  bcv_launch_interactive_repl_on(int no_args) ; 
 
 #endif //!__BASECONV 
