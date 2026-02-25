@@ -66,8 +66,8 @@ char * bcrepl_token_search(const char *  bcrpl_inline_buffer)
 
 static uf64_t   bcrepl_analyse_braw(const char *  raw_buffer) 
 {
-  uf64_t value = strtol(raw_buffer ,  00 , 10); 
-  if (!value  &&  is_printable(raw_buffer))
+  uf64_t value = __bcv_guess_base(raw_buffer , __nptr); 
+  if (!value && is_printable(raw_buffer))
     value = *raw_buffer & 0xff ;  
 
   return value ; 
