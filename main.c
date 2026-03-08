@@ -45,12 +45,11 @@ int main(int ac , char **av)
       return EXIT_SUCCESS ; 
     }
       
-    uf64_t  value =  strtol(short_flags , (void  *)00 , 10) ;  
-    if (!value)
-      value = (unsigned char)(*(short_flags)&0xff);
+    uf64_t  value = bcvtol(short_flags,10) ;  
+    if (!value && is_printable(short_flags))
+      value = (*short_flags & 0xff) ;  
 
-   bcv_print(value);  
-    
+    bcv_print(value);  
     goto _bcv_end ; 
   } 
 
