@@ -21,6 +21,60 @@ Représentation octale (chiffres 0–7)
 .TP
 \fBBase 16\fR
 Représentation hexadécimale (chiffres 0–15, c’est-à-dire 0–f)
+
+.SH FONCTIONNALITÉS
+.TP
+Conversion multi-bases
+Affiche les représentations DEC, HEX, OCT et BIN.
+
+.TP
+Détection automatique
+Reconnaît automatiquement les préfixes :
+0b (binaire), 0x (hexadécimal), 0o (octal).
+
+.TP
+Affichage ASCII
+Si la valeur convertie est comprise entre 32 et 127,
+le caractère ASCII imprimable correspondant est affiché (CHR).
+
+.TP
+Support des expressions shell
+Compatible avec les expressions arithmétiques shell :
+
+    bcv $((10 << 2))
+
+.TP
+Support des caractères
+Les caractères doivent être fournis entre guillemets :
+
+    bcv "#"
+
+.TP
+Mode interactif amélioré
+Invite numérotée, support des conversions directes,
+détection automatique du type d’entrée.
+
+.SH OPTIONS
+.TP
+.B \-b <nombre>
+Conversion explicite en binaire.
+
+.TP
+.B \-o <nombre>
+Conversion explicite en octal.
+
+.TP
+.B \-x <nombre>
+Conversion explicite en hexadécimal.
+
+.TP
+.B \-v
+Affiche la version du programme.
+
+.TP
+.B \-h
+Affiche l’aide.
+
 .SH UTILISATION
 .nf
 Utilisation : bcv [OPTION] ... <NOMBRE>
@@ -29,10 +83,11 @@ Convertir un nombre vers une base spécifique.
 
 Ligne directe | Mode interactif | Description
 ---------------|----------------|----------------------------+
--b <nombre>   | b/<nombre>     | Conversion en binaire      |
--x <nombre>   | x/<nombre>     | Conversion en hexadécimal  |
--o <nombre>   | o/<nombre>     | Conversion en octal        |
-              | exit ou quit   | Quitter le mode interactif |
+-b <nombre>   | b/<nombre>     | Conversion en binaire       |
+-x <nombre>   | x/<nombre>     | Conversion en hexadécimal   |
+-o <nombre>   | o/<nombre>     | Conversion en octal         |
+-c <caractere>| <caracter>     | Code  ascii                 |
+              | exit ou quit   | Quitter le mode interactif  |
 -------------------------------------------------------------+
 -v, 'v' ou '!'   Affiche la version du programme
 -h, 'h' ou '?'   Affiche cette aide
@@ -48,8 +103,60 @@ o/<nombre>  → convertir en octal
 x/<nombre>  → convertir en hexadécimal  
 .br
 exit ou quit → quitter le shell interactif  
-.RE
+
+\fBSi lancé sans argument\fR: 
+
+    $ bcv
+
+Exemple :
+
+    [1] bcv > 0x12
+    DEC: 18
+
+    [2] bcv > U
+    DEC: 85
+    HEX: 0x55
+    OCT: 0125
+    BIN: 0b1010101
+    CHR: U
+
+Commandes disponibles :
+
+    b/<valeur>  → binaire
+    o/<valeur>  → octal
+    x/<valeur>  → hexadécimal
+    exit        → quitter
+    quit        → quitter
+
+.SH SORTIE
+La sortie standard affiche :
+
+    DEC  - représentation décimale
+    HEX  - représentation hexadécimale
+    OCT  - représentation octale
+    BIN  - représentation binaire
+    CHR  - caractère ASCII imprimable (si applicable)
+
 .SH EXEMPLES
+.TP
+Conversion simple :
+    bcv 33
+
+.TP
+Expression shell :
+    bcv $((1<<2))
+
+.TP
+Caractère ASCII :
+    bcv "A"
+
+.TP
+Détection automatique :
+    bcv 0xFEED
+
+
+.RE
+.SH EXEMPLES D'UTILISATION
 Voici quelques exemples d’utilisation de \fBbcv\fR :
 .TP
 Convertir 255 en hexadécimal :
@@ -115,12 +222,21 @@ DEC : 19
 HEX : 0x13
 OCT : 0o23
 .fi
-.RE
+.RE 
+
+.SH INTÉGRATION
+bcv repose sur une librairie C locale,
+sans dépendance externe.
+
+Elle peut être intégrée dans d’autres projets logiciels
+afin d’effectuer des conversions de bases
+directement depuis du code C.
+
 .SH VERSION
 BaseConverter (bcv) version 1.0.1  
 par KerHack-Libre
 .SH AUTEUR
-Umar Ba <jUmarB@protonmail.com>  
+Umar Ba
 .br
 <https://github.com/Jukoo>
 .SH COPYRIGHT
@@ -128,5 +244,9 @@ Copyright (c) 2025 KerHack-Libre
 .br
 Ce logiciel est libre et distribué SANS AUCUNE GARANTIE.
 .SH VOIR AUSSI
-\fBbc\fR(1)
+\fBbc\fR(1) 
+.SH VOIR AUSSI
+.BR bc (1),
+.BR xxd (1),
+.BR hexdump (1) 
 
