@@ -44,7 +44,7 @@ bcv_sources=[
   'src/bcvrepl.c'    # Contain the repl  shell 
   ]
 
-install_man(['doc/manpage/bcv.1'])
+install_man(['doc/manpage/fr/bcv.1'])
 #
 #NOTICE : The logic  of  baseconv  is builded as External Shared and static library
 #         to make it more extensible 

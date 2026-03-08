@@ -4,50 +4,78 @@
 <img src="https://img.shields.io/badge/With%20Python%20Support-yellow?style=for-the-badge&logo=python" width="152"  height="" alt="Python-Support" style="margin-right:20px"  align="right"/>
 
 
-#### Apropos du Base Converter 
+# BaseConv (bcv)
 
-**bcv** (*Base Converter*) est un outil en ligne de commande simple, rapide et libre, conçu pour convertir des nombres entre différentes bases numériques : **binaire**, **octale**, **décimale** et **hexadécimale**.
+**bcv** (*Base Converter*) est un outil en ligne de commande simple, rapide et libre,  
+conçu pour convertir des nombres entre différentes bases numériques :
 
-> Développé par **KerHack-Libre**, dans un esprit **éducatif et pratique**, pour aider chacun à acquérir une **base solide en numérisation informatique** — la fondation de tout système logiciel.
+- Binaire (2)
+- Octale (8)
+- Décimale (10)
+- Hexadécimale (16)
+
+> Développé par **KerHack-Libre**, dans un esprit **éducatif, local et pratique**,  
+> pour aider chacun à acquérir une **base solide en numérisation informatique**.
 
 ---
 
-##### Objectif du projet
+## 🎯 Objectif du projet
 
-Ce projet est né d’un besoin simple mais fondamental :
-**comprendre, manipuler et visualiser les bases numériques** qui sont au cœur de tout ce que fait un ordinateur.
+Bcv se veut d'etre leger et simpliste  sans passer par d'outils lourds.
+qui permet de faire: 
 
-> Une chose aussi basique peut ouvrir des portes incroyables sur la compréhension du fonctionnement interne des machines — et même aider à créer de meilleurs logiciels.
+- Inspecter et déboguer des signatures de fichiers binaires
+- Vérifier rapidement une valeur hexadécimale
+- Visualiser un décalage binaire (`<<`, `>>`)
+- Tester des expressions numériques shell
 
-**bcv** n’est pas qu’un convertisseur :
-c’est un petit compagnon du quotidien pour les développeurs, étudiants, hackers, ou passionnés de bas niveau.
-Je l’utilise moi-même chaque jour pour :
-- inspecter et déboguer  des  signature sur des fichiers **fichiers binaires**
-- ou simplement vérifier rapidement une conversion en **binaire / hex / octal** sans lancer d’outil lourd.
-
---- 
-
-##### Dimension éducative
+####  Dimension éducative
 
 Comprendre les bases numériques, c’est comprendre la langue native des ordinateurs.
 
-**bcv** a été conçu dans un but éducatif: 
+**bcv** a été conçu :
 
-pour initier les étudiants et curieux aux bases du système de numérisation informatique ;
+- Pour initier aux fondements du système de numérisation
+- Pour visualiser concrètement les représentations numériques
+- Pour renforcer les compétences bas niveau
+- Pour établir une base solide de compétences à l’ère numérique
 
-pour permettre aux développeurs de visualiser concrètement ce qui se cache derrière les chiffres et les octets ;
+#### Fonctionnalités
 
-et pour montrer que même un petit outil simple peut être une porte d’entrée vers la programmation système et la conception logicielle.
+- [x] Conversion instantanée entre bases 2, 8, 10, 16
+- [x] Détection automatique des préfixes (`0b`, `0o`, `0x`)
+- [x] Affichage des caractères ASCII imprimables (32 → 127)
+- [x] Support des expressions shell :
+```bash
+bcv $((10 << 2))
+```
 
-##### Fonctionnalités
+- [x] Support des caractères entre guillemets :
+```bash 
+bcv "#"
+```
 
-- Conversion instantanée entre **bases 2, 8, 10 et 16**
-- **Shell interactif** intégré (`b/`, `o/`, `x/` ou `exit`)
-- **Détection automatique** du format d’entrée (`0b`, `0o`, `0x`)
-- ⚙️ **Compact**, **rapide** et **sans dépendance**
-- Parfait pour l’apprentissage, le scripting et le débogage
-- Compatible **Unix/Linux**, compilable avec **GCC**
----
+- [x] Mode interactif amélioré
+- [x] Sortie claire et structurée
+- [x] Compact, rapide et sans dépendance externe
+
+#### TODO 
+- [ ] Different Format de sortie :
+    - [ ] JSON
+    - [ ] Yaml
+    - [ ] XML
+  
+#### Architecture & Intégration
+
+bcv repose sur une librairie C locale, développée sans dépendance externe.
+
+Elle permet :
+- Une intégration directe dans d'autres programmes
+- Une architecture modulaire
+- Une autonomie technologique totale
+
+Ce n’est pas seulement un outil CLI,
+c’est aussi un composant réutilisable.
 
 ##### Installation
 
@@ -78,24 +106,7 @@ bcv [OPTION] <NOMBRE>
 
 ``` 
 
-#### Mode Interactive 
-
-Lancer simplement 
-```bash 
-bcv  
-```
-Puis entrer les commandes : 
-
-```bash 
-b/42       → convertit en binaire
-x/255      → convertit en hexadécimal
-o/77       → convertit en octal
-exit       → quitte le shell
-```
-
-#### mode Rapide 
-
-#### Exemples 
+###### Mode direct ou rapide 
 
 ```bash 
 $ bcv 12
@@ -109,12 +120,34 @@ DEC : 65261
 OCT : 0o177355
 BIN : 0b1111111011101101
 
-$ bcv E
-DEC : 69
-HEX : 0x45
-OCT : 0o105
-BIN : 0b1000101
+$ bcv 33
 
+DEC: 33
+HEX: 0x21
+OCT: 041
+BIN: 0b100001
+CHR: !
+```
+
+###### Expression shell
+> bcv $((1 << 2))
+
+###### Caractère ASCII
+> bcv "U"
+
+#### Mode Interactive 
+
+Lancer simplement 
+```bash 
+bcv  
+```
+Puis entrer les commandes : 
+
+```bash 
+b/42       → convertit en binaire
+x/255      → convertit en hexadécimal
+o/77       → convertit en octal
+exit       → quitte le shell
 ```
 
 Une Page de manuel est incluse 

@@ -10,7 +10,7 @@
 
 
 char bc_global_buffer[0xff]={0} ;  
-uf64_t __allbase_enable__ = (BIN|CHR|OCT|HEX|429496729600);   
+uf64_t __allbase_enable__ = (BIN|CHR|OCT|HEX|0x6400000000);   
 
 char *  bc_hex( uf64_t value) 
 { 
@@ -130,7 +130,7 @@ uf64_t __bcv_guess_base(const char * restrict num , void (*base_printer)(uf64_t)
        break; 
      default : 
        //! decimal 
-       options&=~429496729600 ; 
+       options&=~0x6400000000 ; 
        value = strtol(num, (void*)0 , 10) ; 
        goto _end; 
   }
