@@ -16,15 +16,16 @@
 void bcrepl_shell(const char *  prompt)
 {
    const char * prmpt =  !prompt ? pname :  prompt ;  
-   int proceed =1 ; 
+   int proceed =1, 
+       line = 0; 
    char prompt_buffer[bcrepl_buffer_limit]={0}; 
-   int  line = 0; 
-   fprintf(stdout , "%s" , BCV_STARTUP_MESG) ; 
+   bcv_info("%s" ,  BCV_STARTUP_MESG) ; 
+   
    while (proceed, ++line) 
    { 
 
-     //!BCV_SUCCESS()
-     apply( printf(bpf, line,  prmpt , bcrepl_symbole_prompt) , GREEN) ;  
+     bcv_success(bpf , line , prmpt , bcrepl_symbole_prompt) ; 
+    // apply( printf(bpf, line,  prmpt , bcrepl_symbole_prompt) , GREEN) ;  
 
      if(!(fgets(prompt_buffer ,  bcrepl_buffer_limit, stdin)))
        continue ; 
@@ -116,17 +117,14 @@ void bcrepl_compute(const char * buffer)
       case 'c':  
          out = bc_chr(value); break ;  
       default :
-                //BCV_WARN("|-> W: Unknow operation type 'h' or '?' to print the usage\n") 
-                 
-         apply(fprintf(stderr ,"|-> W: Unknow operation type 'h' or '?' to print the usage\n")
-             ,YELLOW) ;
+         bcv_warning("|-> W: Unknow operation type 'h' or '?' to print the usage \012");  
          break ; 
    }
    if (!out)  
      return ;  
 
-   //BCV_ERR() 
-   apply(printf(" |-> %s\012", out) , RED) ; 
+   bcv_error("|-> %s\012", out) ; 
+
 } 
 
 void bcrepl_listen_special_cmd(const char * buffer) 
@@ -195,9 +193,9 @@ static void bcrepl_show_helper(const char  repl_buffer[static 1])
   switch( *repl_buffer  & 0xff)
   {
     case '?':  
-    case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 
+    case 'h': bcv_info("%s%s\012", USAGE , BCV_VERSION_STR) ; break;  
     case '!': 
-    case 'v': fprintf(stdout , "%s\012", BCV_STARTUP_MESG) ; break ;   
+    case 'v': bcv_info("%s\012", BCV_STARTUP_MESG) ; break ;   
   }
 
 }

@@ -44,6 +44,18 @@ static inline  __attribute__((constructor)) void init_tty(void)
 #define  apply(__statement , __color_attr)  \
   __color_attr;__statement; __reset 
 
+#define  bcv_success(...)\
+  apply(fprintf(stdout,__VA_ARGS__), GREEN) 
+
+#define bcv_warning(...)\
+  apply(fprintf(stdout, __VA_ARGS__), YELLOW) 
+
+#define bcv_error(...)\
+  apply(fprintf(stderr,__VA_ARGS__), RED)  
+
+#define bcv_info(...) \
+  apply(fprintf(stdout ,__VA_ARGS__),INFO)
+
 #else /* NOTICE : NO SUPPORT FOR  WINDOW*/  
 
 # define GREEN 
@@ -59,11 +71,14 @@ static inline  __attribute__((constructor)) void init_tty(void)
 
 #define  __nptr  (void *) 0   
 
+#if !defined(BCVRPL_SEPS)  
 #define  BCVRPL_SEPS {\
   0x2f,0x20,\
   0x28,0x23,\
   0x24,0x25,\
   0x0}
+#endif 
+
 
 #define  bcrepl_symbole_prompt  0x3e 
 #define  bcrepl_buffer_limit    0x50
