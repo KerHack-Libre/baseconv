@@ -8,6 +8,7 @@
 #include <stdlib.h> 
 #include <ctype.h>
 #include <errno.h>
+#include <stdarg.h>  
 
 #include "baseconv.h"
 #include "bcvrepl.h" 
@@ -25,7 +26,6 @@ void bcrepl_shell(const char *  prompt)
    { 
 
      bcv_success(bpf , line , prmpt , bcrepl_symbole_prompt) ; 
-    // apply( printf(bpf, line,  prmpt , bcrepl_symbole_prompt) , GREEN) ;  
 
      if(!(fgets(prompt_buffer ,  bcrepl_buffer_limit, stdin)))
        continue ; 
@@ -131,14 +131,59 @@ void bcrepl_listen_special_cmd(const char * buffer)
 {
    char * cmd =  strdup(buffer) ; 
    __trimlower(cmd) ; 
-    
-   if(0 == strcmp(cmd, "quit") || \
-      0 == strcmp(cmd, "exit")) 
-   {
-     free(cmd) ; 
-     exit(0) ; 
-   }
 
+   if(bcrepl_special_cmd_ops(cmd , C_CHRAY(EXIT_COMMANDS) , exiting_command))
+     free(cmd),exit(0) ; 
+
+   bcrepl_special_cmd_ops(cmd , C_CHRAY(INFORMATION_COMMANDS),sinfo_command); 
+   
+   free(cmd) ; 
+
+} 
+
+static int bcrepl_special_cmd_ops(char * cmd ,char * const * listofcmd, bcrcmd_sops cmdop) 
+{
+  unsigned char  *ccmd =00, 
+                 icmd=~0;  
+  int  status = 0 ;  
+  while(*(listofcmd+ ++icmd)) 
+  {
+    ccmd = *(listofcmd+icmd); 
+    if(cmdop(cmd, ccmd)) 
+       status^=1 ; 
+  } 
+
+  return status ; 
+}
+
+int  exiting_command(const char *  cmd , ...) 
+{ 
+  int  once = 1 ; 
+  va_list ap  ; 
+  va_start(ap , once) ; 
+  char * ccmd  = va_arg(ap , char *) ; 
+  va_end(ap) ; 
+
+  return (0 == strcmp(cmd ,ccmd));   
+}
+
+int  sinfo_command(const char * cmd , ...) 
+{
+
+  int  once = 1 ; 
+  va_list ap  ; 
+  va_start(ap , once) ; 
+  char * ccmd  = va_arg(ap , char *) ; 
+  va_end(ap) ; 
+
+
+  if(!strcmp(cmd , ccmd))
+  {
+    puts("Please see the LICENSE file ") ; 
+    //TODO : read the license file 
+  }
+  
+  return 0 ; 
 }
 
 void __trimlower(char* bcv_cmd) 

@@ -16,6 +16,8 @@
 #if defined(__linux__) 
 #include <term.h> 
 #include <curses.h> 
+//#include "bcvtty" 
+
 /* @fn  init_tty(void) 
  * @brief  setting up terminal for curses attribute 
  * */
@@ -48,7 +50,7 @@ static inline  __attribute__((constructor)) void init_tty(void)
   apply(fprintf(stdout,__VA_ARGS__), GREEN) 
 
 #define bcv_warning(...)\
-  apply(fprintf(stdout, __VA_ARGS__), YELLOW) 
+  apply(fprintf(stdout,__VA_ARGS__),YELLOW) 
 
 #define bcv_error(...)\
   apply(fprintf(stderr,__VA_ARGS__), RED)  
@@ -56,18 +58,12 @@ static inline  __attribute__((constructor)) void init_tty(void)
 #define bcv_info(...) \
   apply(fprintf(stdout ,__VA_ARGS__),INFO)
 
-#else /* NOTICE : NO SUPPORT FOR  WINDOW*/  
-
-# define GREEN 
-# define RED 
-# define YELLOW 
-# define  apply(__statement , __color_attr /*!ignored*/)  __statement
 #endif
-
 
 #define BCV_STARTUP_MESG \
   BCV_VERSION_STR\
-  BCV_DISCLAIMER
+  BCV_DISCLAIMER\
+  BCV_HINT
 
 #define  __nptr  (void *) 0   
 
@@ -79,6 +75,10 @@ static inline  __attribute__((constructor)) void init_tty(void)
   0x0}
 #endif 
 
+#define C_CHRAY(litteral_constant_array) (char * const []) litteral_constant_array 
+
+#define EXIT_COMMANDS {"quit","exit",0} 
+#define INFORMATION_COMMANDS {"license",0}
 
 #define  bcrepl_symbole_prompt  0x3e 
 #define  bcrepl_buffer_limit    0x50
@@ -93,7 +93,7 @@ extern char * program_invocation_short_name ;
 # define  pname  "bcv" 
 #endif 
 
-
+typedef  typeof(int(const char * __restrict , ...)) *bcrcmd_sops  ; 
 typedef  typeof(void(const char *  __restrict__)) * user_prompt_custom_shell ; 
 
 /* @fn bcrepl_shell(const char * _Nullable) 
@@ -128,9 +128,24 @@ bcrepl_listen_special_cmd(const char *__buffer) ;
 bcvrepl_export void 
 __trimlower(char  *__cmd); 
 
+/* @fn exiting_command(const char * _NonNullable  ) 
+ * @brief  listen  basic command command like exit or quit 
+ * @parm const char *  - command  
+ * @return  1 - 0  
+ */
+bcvrepl_export int __attribute__((weak))
+exiting_command(const char *  cmd,  ...);   
+ 
+bcvrepl_export int __attribute__((weak))    
+sinfo_command(const char * cmd, ...) ; 
 static uf64_t bcrepl_analyse_braw(const char *  __restrict__ raw_input_buffer) ; 
-
 bcvrepl_export char * bcrepl_token_search(const char * __restrict__) ; 
 bcvrepl_export uf64_t bcrepl_process(const char  * buffer , char founded_token) ; 
 static void bcrepl_show_helper(const char  buffer [ static 1 ]) ; 
+
+
+static int bcrepl_special_cmd_ops(char * cmd , 
+                                  char  *const listofcmd[restrict 1],
+                                  bcrcmd_sops  cmdop) ; 
+
 #endif //!bcv_repl_h 
