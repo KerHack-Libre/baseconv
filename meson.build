@@ -15,6 +15,7 @@ data.set_quoted('BCV_VERSION',meson.project_version())
 data.set_quoted('BCV_DISCLAIMER', bcv_copyright) 
 data.set_quoted('BCV_VERSION_STR', 'bcv version '+meson.project_version()+'\\012')
 data.set_quoted('BCV_VERSTRLONG' , 'baseconverter  version '+meson.project_version()+' by KerHack-Libre')
+data.set_quoted('BCV_HINT', 'Tip: type [?]or[h] for help and [!]or[v] for  version'+'\\012') 
 
 configure_file( 
   output: 'bcv_conf.h', 

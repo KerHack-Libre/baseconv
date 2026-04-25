@@ -8,6 +8,7 @@
 #include <stdlib.h> 
 #include <ctype.h>
 #include <errno.h>
+#include <stdarg.h>  
 
 #include "baseconv.h"
 #include "bcvrepl.h" 
@@ -16,15 +17,15 @@
 void bcrepl_shell(const char *  prompt)
 {
    const char * prmpt =  !prompt ? pname :  prompt ;  
-   int proceed =1 ; 
+   int proceed =1, 
+       line = 0; 
    char prompt_buffer[bcrepl_buffer_limit]={0}; 
-   int  line = 0; 
-   fprintf(stdout , "%s" , BCV_STARTUP_MESG) ; 
+   bcv_info("%s" ,  BCV_STARTUP_MESG) ; 
+   
    while (proceed, ++line) 
    { 
 
-     //!BCV_SUCCESS()
-     apply( printf(bpf, line,  prmpt , bcrepl_symbole_prompt) , GREEN) ;  
+     bcv_success(bpf , line , prmpt , bcrepl_symbole_prompt) ; 
 
      if(!(fgets(prompt_buffer ,  bcrepl_buffer_limit, stdin)))
        continue ; 
@@ -116,31 +117,73 @@ void bcrepl_compute(const char * buffer)
       case 'c':  
          out = bc_chr(value); break ;  
       default :
-                //BCV_WARN("|-> W: Unknow operation type 'h' or '?' to print the usage\n") 
-                 
-         apply(fprintf(stderr ,"|-> W: Unknow operation type 'h' or '?' to print the usage\n")
-             ,YELLOW) ;
+         bcv_warning("|-> W: Unknow operation type 'h' or '?' to print the usage \012");  
          break ; 
    }
    if (!out)  
      return ;  
 
-   //BCV_ERR() 
-   apply(printf(" |-> %s\012", out) , RED) ; 
+   bcv_error("|-> %s\012", out) ; 
+
 } 
 
 void bcrepl_listen_special_cmd(const char * buffer) 
 {
    char * cmd =  strdup(buffer) ; 
    __trimlower(cmd) ; 
-    
-   if(0 == strcmp(cmd, "quit") || \
-      0 == strcmp(cmd, "exit")) 
-   {
-     free(cmd) ; 
-     exit(0) ; 
-   }
 
+   if(bcrepl_special_cmd_ops(cmd , C_CHRAY(EXIT_COMMANDS) , exiting_command))
+     free(cmd),exit(0) ; 
+
+   bcrepl_special_cmd_ops(cmd , C_CHRAY(INFORMATION_COMMANDS),sinfo_command); 
+   
+   free(cmd) ; 
+
+} 
+
+static int bcrepl_special_cmd_ops(char * cmd ,char * const * listofcmd, bcrcmd_sops cmdop) 
+{
+  unsigned char  *ccmd =00, 
+                 icmd=~0;  
+  int  status = 0 ;  
+  while(*(listofcmd+ ++icmd)) 
+  {
+    ccmd = *(listofcmd+icmd); 
+    if(cmdop(cmd, ccmd)) 
+       status^=1 ; 
+  } 
+
+  return status ; 
+}
+
+int  exiting_command(const char *  cmd , ...) 
+{ 
+  int  once = 1 ; 
+  va_list ap  ; 
+  va_start(ap , once) ; 
+  char * ccmd  = va_arg(ap , char *) ; 
+  va_end(ap) ; 
+
+  return (0 == strcmp(cmd ,ccmd));   
+}
+
+int  sinfo_command(const char * cmd , ...) 
+{
+
+  int  once = 1 ; 
+  va_list ap  ; 
+  va_start(ap , once) ; 
+  char * ccmd  = va_arg(ap , char *) ; 
+  va_end(ap) ; 
+
+
+  if(!strcmp(cmd , ccmd))
+  {
+    puts("Please see the LICENSE file ") ; 
+    //TODO : read the license file 
+  }
+  
+  return 0 ; 
 }
 
 void __trimlower(char* bcv_cmd) 
@@ -195,9 +238,9 @@ static void bcrepl_show_helper(const char  repl_buffer[static 1])
   switch( *repl_buffer  & 0xff)
   {
     case '?':  
-    case 'h': fprintf(stdout , "%s%s\12" ,  USAGE ,  BCV_VERSION_STR); break; 
+    case 'h': bcv_info("%s%s\012", USAGE , BCV_VERSION_STR) ; break;  
     case '!': 
-    case 'v': fprintf(stdout , "%s\012", BCV_STARTUP_MESG) ; break ;   
+    case 'v': bcv_info("%s\012", BCV_STARTUP_MESG) ; break ;   
   }
 
 }
